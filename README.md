@@ -1,5 +1,5 @@
 <p align="center">
- <img width="300" src="https://octodex.github.com/images/inspectocat.jpg" />
+ <img width="270" src="https://octodex.github.com/images/inspectocat.jpg" />
 </p>
 
 # gh-get
