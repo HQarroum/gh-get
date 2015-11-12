@@ -1,3 +1,7 @@
+<p align="center">
+ <img width="300" src="https://octodex.github.com/images/inspectocat.jpg" />
+</p>
+
 # gh-get
 > Github read-only swissknife command-line tool.
 
