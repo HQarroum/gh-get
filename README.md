@@ -16,3 +16,11 @@ Lead Maintainer: [Halim Qarroum](mailto:hqm.post@gmail.com)
 ```bash
 npm install -g gh-get
 ```
+
+## Features
+
+ * Interactive command-line assistant
+ * User profile page generation
+ * Information and statistics about followers
+ * Query for user Gists and repositories
+ * Search Github interactively through the command line
