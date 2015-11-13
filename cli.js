@@ -23,7 +23,6 @@ nconf.argv().file('./config.json');
  * Injecting core middleware.
  */
 chain.use(require('./middleware/core/cmd-line'));
-chain.use(require('./middleware/core/octocat-ascii'));
 chain.use(require('./middleware/core/inquirer'));
 
 /**
