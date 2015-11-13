@@ -24,7 +24,7 @@ var displayProfile = function (user) {
     ImageToAscii({
         path: user.avatar_url,
         size: {
-            height: '45%'
+            height: '35%'
         }
     }, function (err, converted) {
         console.log();

@@ -117,7 +117,7 @@ var displayGist = function (input, next) {
             return promptGist(response.body);
         }).then(function (id) {
             input.set('gist:id', id);
-            return getGist(input);
+            return gist.get(input);
         }).then(function (response) {
             entry(response.body);
             return promptFiles(response.body.files);

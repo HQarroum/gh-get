@@ -1,4 +1,3 @@
-var chalk    = require('chalk');
 var _        = require('lodash');
 var inquirer = require('inquirer');
 
@@ -112,7 +111,6 @@ module.exports = function (input, output, next) {
     }
     prompt().then(function (answers) {
         if (!answers.authenticate) {
-            console.info(chalk.yellow.bold('[!] No authentication provided, proceeding as anonymous ...'));
             return next();
         }
         setCredentials(input, encode(answers.login, answers.password));

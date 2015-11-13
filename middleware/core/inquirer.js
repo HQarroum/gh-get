@@ -1,5 +1,7 @@
 var inquirer = require('inquirer');
 var chalk    = require('chalk');
+var path     = require('path');
+var fs       = require('fs');
 var _        = require('lodash');
 
 /**
@@ -13,6 +15,24 @@ var validator = function (message) {
     return function (value) {
         return (value && value.length > 0) || message;
     };
+};
+
+/**
+ * Displays the octocat logo.
+ */
+var octocat = function () {
+    var name = path.join(__dirname, '..', '..', 'assets', 'octocat.txt');
+    console.log(chalk.yellow(
+      fs.readFileSync(name, 'utf8')
+    ));
+};
+
+/**
+ * Exits the program.
+ */
+var exit = function () {
+    console.log(chalk.yellow('Goodbye !'));
+    process.exit(0);
 };
 
 /**
@@ -59,6 +79,7 @@ var promptAction = function () {
  * @returns {Promise} a promise to the user response
  */
 var prompt = function () {
+    octocat();
     return promptAction().then(function (answers) {
         if (answers.action !== 'Quit' && !answers.username) {
             return promptUsername().then(function (username) {
@@ -86,8 +107,7 @@ module.exports = function (input, output, next) {
     }
     prompt().then(function (answers) {
         if (answers.action === 'Quit') {
-            console.log(chalk.yellow('Goodbye !'));
-            return process.exit(0);
+            exit();
         }
         input.set('answers', answers);
         next();
