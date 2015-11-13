@@ -1,3 +1,5 @@
+'use strict';
+
 var inquirer = require('inquirer');
 var chalk    = require('chalk');
 var path     = require('path');
@@ -11,11 +13,7 @@ var _        = require('lodash');
  * failure.
  * @returns {Function} a validator.
  */
-var validator = function (message) {
-    return function (value) {
-        return (value && value.length > 0) || message;
-    };
-};
+var validator = (message) => (value) => (value && value.length > 0) || message;
 
 /**
  * Displays the octocat logo.
@@ -40,55 +38,49 @@ var exit = function () {
  * interested in.
  * @returns {Promise} a promise to the given username.
  */
-var promptUsername = function () {
-    return new Promise(function (resolve) {
-        inquirer.prompt([{
-            message: 'Which user are you interested in ? (e.g HQarroum)',
-            name: 'username',
-            validate: validator('Please enter a user name')
-        }], resolve);
-    });
-};
+var promptUsername = () => new Promise(function (resolve) {
+    inquirer.prompt([{
+        message: 'Which user are you interested in ? (e.g HQarroum)',
+        name: 'username',
+        validate: validator('Please enter a user name')
+    }], resolve);
+});
 
 /**
  * Prompts the user to choose an action.
  * @returns {Promise} a promise to the user action.
  */
-var promptAction = function () {
-    return new Promise(function (resolve) {
-        inquirer.prompt([{
-            message: 'What would you like to do ?',
-            type: 'list',
-            name: 'action',
-            choices: [
-                'Consult the profile page of a user',
-                'List the followers a user has',
-                'List the people followed by a user',
-                'List the people followed by a user but not following him',
-                'List the repositories of a user',
-                'List the Gists of a user',
-                'Retrieve the Gist of a user',
-                'Quit'
-            ]
-        }], resolve);
-    });
-};
+var promptAction = () => new Promise(function (resolve) {
+    octocat();
+    inquirer.prompt([{
+        message: 'What would you like to do ?',
+        type: 'list',
+        name: 'action',
+        choices: [
+            'Consult the profile page of a user',
+            'List the followers a user has',
+            'List the people followed by a user',
+            'List the people followed by a user but not following him',
+            'List the repositories of a user',
+            'List the Gists of a user',
+            'Retrieve the Gist of a user',
+            'Quit'
+        ]
+    }], resolve);
+});
 
 /**
  * Asks the user what action he would like to perform.
  * @returns {Promise} a promise to the user response
  */
-var prompt = function () {
-    octocat();
-    return promptAction().then(function (answers) {
-        if (answers.action !== 'Quit' && !answers.username) {
-            return promptUsername().then(function (username) {
-                return _.assign(answers, username);
-            });
-        }
-        return answers;
-    });
-};
+var prompt = () => promptAction().then(function (answers) {
+    if (answers.action !== 'Quit' && !answers.username) {
+        return promptUsername().then(function (username) {
+            return _.assign(answers, username);
+        });
+    }
+    return answers;
+});
 
 /**
  * This middleware prompts the user to choose between
@@ -97,8 +89,8 @@ var prompt = function () {
  * @param output the output object
  * @param next a callback to call the next middleware
  */
-module.exports = function (input, output, next) {
-    var answers = input.get('answers');
+module.exports = (input, output, next) => {
+    const answers = input.get('answers');
 
     if (_.isObject(answers)) {
         // Another middleware already filled in

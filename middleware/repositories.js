@@ -1,10 +1,12 @@
+'use strict';
+
 var chalk = require('chalk');
 var repos = require('../controllers/repositories');
 
 /**
  * Displays information about a repository.
  */
-var entry = function (repository) {
+var entry = (repository) => {
     console.log(
       chalk.bold.blue(' *'),
 
@@ -30,20 +32,18 @@ var entry = function (repository) {
  * @param input the chain input
  * @param next the next middleware trigger
  */
-var displayRepositories = function (input, next) {
-    var username = input.get('answers:username');
-    var path     = input.get('answers:path');
+var displayRepositories = (input, next) => {
+    const username = input.get('answers:username');
+    const path     = input.get('answers:path');
 
     if (path) {
-        return repos.get(input).then(function (response) {
-            entry(response.body);
-        }).catch(next);
+        return repos.get(input)
+          .then((response) => entry(response.body))
+          .catch(next);
     }
-    repos.list(input).then(function (response) {
+    repos.list(input).then((response) => {
         console.log('Here is a list of', chalk.underline(username) + '\'s public repositories :\n');
-        response.body.forEach(function (repository) {
-            entry(repository);
-        });
+        response.body.forEach((repository) => entry(repository));
     }).catch(next);
 };
 

@@ -1,11 +1,13 @@
-var got  = require('gh-got');
-var gist = module.exports;
+'use strict';
+
+let got   = require('gh-got');
+let gists = module.exports;
 
 /**
  * Returns a promise to the list of up to 100 public
  * Gists of the given user.
  */
-gist.list = function (input) {
+gists.list = (input) => {
     return got('users/' + input.get('answers:username') + '/gists?per_page=100', input.headers);
 };
 
@@ -13,6 +15,6 @@ gist.list = function (input) {
  * Returns a promise to the list of up to 100 public
  * Gists of the given user.
  */
-gist.get = function (input) {
+gists.get = (input) => {
     return got('gists/' + input.get('answers:path'), input.headers);
 };

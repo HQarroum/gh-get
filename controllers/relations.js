@@ -1,6 +1,8 @@
-var _        = require('lodash');
-var got      = require('gh-got');
-var relation = module.exports;
+'use strict';
+
+let _        = require('lodash');
+let got      = require('gh-got');
+let relation = module.exports;
 
 /**
  * Namespaces identifying the relations.
@@ -15,7 +17,7 @@ relation.unfollowers = {};
  * and which are not following back.
  * This method also sorts the list by login.
  */
-var difference = function (followers, following) {
+var difference = (followers, following) => {
     return _(_.pluck(following, 'login'))
       .difference(_.pluck(followers, 'login'))
       .sortBy(function (login) {
@@ -28,7 +30,7 @@ var difference = function (followers, following) {
  * @return a promise to the list of up to 100 followers
  * of the given user.
  */
-relation.followers.list = function (input) {
+relation.followers.list = (input) => {
     return got('users/' + input.get('answers:username') + '/followers?per_page=100', input.headers);
 };
 
@@ -36,7 +38,7 @@ relation.followers.list = function (input) {
  * @return a promise to the list of up to 100 people
  * being followed by the given user.
  */
-relation.following.list = function (input) {
+relation.following.list = (input) => {
     return got('users/' + input.get('answers:username') + '/following?per_page=100', input.headers);
 };
 
@@ -45,8 +47,8 @@ relation.following.list = function (input) {
  * followed by the given user, but which are not
  * following him.
  */
-relation.unfollowers.list = function (input) {
-    return Promise.all([relation.followers.list(input), relation.following.list(input)]).then(function (results) {
+relation.unfollowers.list = (input) => {
+    return Promise.all([relation.followers.list(input), relation.following.list(input)]).then((results) => {
         return difference(results[0].body, results[1].body);
     });
 };

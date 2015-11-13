@@ -1,3 +1,5 @@
+'use strict';
+
 var _     = require('lodash');
 var chalk = require('chalk');
 
@@ -11,7 +13,7 @@ var map = {
     'gist': 'Retrieve the Gist of a user'
 };
 
-var parseInput = function (argument) {
+var parseInput = (argument) => {
     var array = argument.split(':');
     var answers = {};
 
@@ -41,17 +43,16 @@ var resolveInput = function (input) {
     return parseInput(store[0]);
 };
 
-module.exports  = function (input, output, next) {
-    var answers = input.get('answers');
+module.exports = (input, output, next) => {
+    const answers = input.get('answers');
+    const action  = resolveInput(input);
 
     if (answers && answers.action && answers.username) {
         // Another middleware already filled in
         // the user answers.
         return next();
     }
-    var action = resolveInput(input);
     if (action) {
-        console.log(action);
         input.set('answers', action);
     }
     next();

@@ -1,3 +1,5 @@
+'use strict';
+
 var chalk     = require('chalk');
 var _         = require('lodash');
 var relations = require('../controllers/relations');
@@ -5,7 +7,7 @@ var relations = require('../controllers/relations');
 /**
  * Displays information about a given follower.
  */
-var entry = function (follower) {
+var entry = (follower) => {
     if (_.isObject(follower)) {
         console.log(
           chalk.bold.blue(' *'),
@@ -22,17 +24,15 @@ var entry = function (follower) {
  * @param input the chain input
  * @param next the next middleware trigger
  */
-var displayFollowings = function (input, next) {
-    var username = input.get('answers:username');
+var displayFollowings = (input, next) => {
+    const username = input.get('answers:username');
 
-    relations.following.list(input).then(function (response) {
+    relations.following.list(input).then((response) => {
         if (response.body.length > 0) {
-            console.log('Here is a list of the users being followed by', username, ':');
-            response.body.forEach(function (user) {
-                entry(user);
-            });
+            console.log('Users being followed by', chalk.underline(username), ':');
+            response.body.forEach((user) => entry(user));
         } else {
-            console.log('The current user is not following anyone');
+            console.log('The given user is not following anyone');
         }
     }).catch(next);
 };
@@ -42,12 +42,12 @@ var displayFollowings = function (input, next) {
  * @param input the chain input
  * @param next the next middleware trigger
  */
-var displayFollowers = function (input, next) {
-    var username = input.get('answers:username');
+var displayFollowers = (input, next) => {
+    const username = input.get('answers:username');
 
     relations.followers.list(input).then(function (response) {
         if (response.body.length > 0) {
-            console.log('Here is a list of the users currently following', username, ':');
+            console.log('Users currently following', chalk.underline(username), ':');
             response.body.forEach(function (user) {
                 entry(user);
             });
@@ -63,8 +63,8 @@ var displayFollowers = function (input, next) {
  * @param input the chain input
  * @param next the next middleware trigger
  */
-var displayUnfollowers = function (input, next) {
-    relations.unfollowers.list(input).then(function (unfollowers) {
+var displayUnfollowers = (input, next) => {
+    relations.unfollowers.list(input).then((unfollowers) => {
         if (unfollowers.length > 0) {
             unfollowers.forEach(function (user) {
                 entry(user);
@@ -81,7 +81,7 @@ var displayUnfollowers = function (input, next) {
  * @param output the middleware output
  * @param next the callback to the next middleware
  */
-module.exports = function (input, output, next) {
+module.exports = (input, output, next) => {
     var action = input.get('answers:action');
 
     if (action === 'List the people followed by a user') {

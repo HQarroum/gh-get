@@ -1,16 +1,18 @@
 #!/usr/bin/env node
 
-var nconf = require('nconf');
-var fs    = require('fs');
-var path  = require('path');
-var chalk = require('chalk');
-var Chain = require('middleware-chain');
-var dir   = path.join(__dirname, 'middleware');
+'use strict';
+
+let nconf = require('nconf');
+let fs    = require('fs');
+let path  = require('path');
+let chalk = require('chalk');
+let Chain = require('middleware-chain');
+let dir   = path.join(__dirname, 'middleware');
 
 /**
  * Instantiating a new chain.
  */
-var chain = new Chain();
+let chain = new Chain();
 
 /**
  * Initializing `nconf` to load its configuration
@@ -29,8 +31,8 @@ chain.use(require('./middleware/core/inquirer'));
  * Injecting application-level middleware located
  * in the `middleware` directory.
  */
-fs.readdirSync(dir).forEach(function (file) {
-    var name = path.join(dir, file);
+fs.readdirSync(dir).forEach((file) => {
+    let name = path.join(dir, file);
     if (fs.lstatSync(name).isFile()) {
         chain.use(require(name));
     }
@@ -40,7 +42,7 @@ fs.readdirSync(dir).forEach(function (file) {
  * Middleware called when the command was
  * not resolved.
  */
-chain.use(function () {
+chain.use(() => {
     console.warn(chalk.red.bold('[!] The given command could not be resolved by any module'));
 });
 
@@ -48,7 +50,7 @@ chain.use(function () {
  * Middleware called when an error was thrown
  * by a middleware.
  */
-chain.use(function (err, input, output, next) {
+chain.use((err, input, output, next) => {
     console.error(chalk.red.bold('[!] An error was thrown by a module :', err));
 });
 

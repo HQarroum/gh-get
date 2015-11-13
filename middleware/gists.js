@@ -1,3 +1,5 @@
+'use strict';
+
 var chalk    = require('chalk');
 var inquirer = require('inquirer');
 var _        = require('lodash');
@@ -20,17 +22,15 @@ var entry = function (gist) {
     );
 };
 
-var sanitized = function (gists) {
-    return _.map(gists, function (gist) {
-        var output = new String(gist.description).trim()
-          .replace(/\r?\n/g, ' ');
+var sanitized = (gists) =>_.map(gists, function (gist) {
+    var output = new String(gist.description).trim()
+      .replace(/\r?\n/g, ' ');
 
-        if (!output.length) {
-            return '(Empty description)';
-        }
-        return output;
-    });
-};
+    if (!output.length) {
+        return '(Empty description)';
+    }
+    return output;
+});
 
 /**
  * Prompts the user to choose between the different Gists available.
@@ -38,20 +38,18 @@ var sanitized = function (gists) {
  * by the current user.
  * @returns {Promise} a promise to the chosen Gist.
  */
-var promptGist = function (gists) {
-    return new Promise(function (resolve) {
-        inquirer.prompt([
-            {
-                message: 'Which Gist are you interested in ?',
-                type: 'list',
-                name: 'path',
-                choices: sanitized(gists)
-            }
-        ], function (answers) {
-            resolve(_.findWhere(gists, { description: answers.path }).id);
-        });
+var promptGist = (gists) => new Promise(function (resolve) {
+    inquirer.prompt([
+        {
+            message: 'Which Gist are you interested in ?',
+            type: 'list',
+            name: 'path',
+            choices: sanitized(gists)
+        }
+    ], function (answers) {
+        resolve(_.findWhere(gists, { description: answers.path }).id);
     });
-};
+});
 
 /**
  * Prompts the user to choose between the different files available
@@ -59,34 +57,32 @@ var promptGist = function (gists) {
  * @param files the list of files part of the Gist.
  * @returns {Promise} a promise to the chosen file.
  */
-var promptFiles = function (files) {
-    return new Promise(function (resolve) {
-        inquirer.prompt([
-            {
-                message: 'Which file are you interested in ?',
-                type: 'checkbox',
-                name: 'name',
-                choices: _.keys(files)
-            }
-        ], function (answers) {
-            _.each(answers.name, function (name) {
-                console.log();
-                console.log(chalk.bold(chalk.blue('* '), chalk.magenta(name)), '\n');
-                console.log(files[name].content);
-                console.log();
-            });
-            resolve();
+var promptFiles = (files) => new Promise(function (resolve) {
+    inquirer.prompt([
+        {
+            message: 'Which file are you interested in ?',
+            type: 'checkbox',
+            name: 'name',
+            choices: _.keys(files)
+        }
+    ], (answers) => {
+        _.each(answers.name, function (name) {
+            console.log();
+            console.log(chalk.bold(chalk.blue('* '), chalk.magenta(name)), '\n');
+            console.log(files[name].content);
+            console.log();
         });
+        resolve();
     });
-};
+});
 
 /**
  * Displays up to 100 Gists of the given user.
  * @param input the chain input
  * @param next the next middleware trigger
  */
-var displayGists = function (input, next) {
-    var username = input.get('answers:username');
+var displayGists = (input, next) => {
+    const username = input.get('answers:username');
 
     gist.list(input).then(function (response) {
         if (response.body.length > 0) {
@@ -105,8 +101,8 @@ var displayGists = function (input, next) {
  * @param input the chain input
  * @param next the next middleware trigger
  */
-var displayGist = function (input, next) {
-    var name = input.get('answers:path');
+var displayGist = (input, next) => {
+    const name = input.get('answers:path');
 
     if (name) {
         gist.get(input).then(function (response) {
@@ -132,8 +128,8 @@ var displayGist = function (input, next) {
  * @param output the middleware output
  * @param next the callback to the next middleware
  */
-module.exports = function  (input, output, next) {
-    var action = input.get('answers:action');
+module.exports = (input, output, next) => {
+    const action = input.get('answers:action');
 
     if (action === 'List the Gists of a user') {
         displayGists(input, next);
