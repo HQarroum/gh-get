@@ -24,10 +24,6 @@ nconf.argv().file('./config.json');
  */
 chain.use(require('./middleware/core/cmd-line'));
 chain.use(require('./middleware/core/octocat-ascii'));
-chain.use(function (i, o, n) {
-    //process.exit(0);
-    n();
-});
 chain.use(require('./middleware/core/inquirer'));
 
 /**
