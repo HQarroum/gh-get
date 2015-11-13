@@ -1,0 +1,21 @@
+           MMM.           .MMM
+           MMMMMMMMMMMMMMMMMMM
+           MMMMMMMMMMMMMMMMMMM      ______________________________________
+          MMMMMMMMMMMMMMMMMMMMM    |                                      |
+         MMMMMMMMMMMMMMMMMMMMMMM   | Welcome to the gh-get command-line ! |
+        MMMMMMMMMMMMMMMMMMMMMMMM   |_   __________________________________|
+        MMMM::- -:::::::- -::MMMM    |/
+         MM~:~   ~:::::~   ~:~MM
+    .. MMMMM::. .:::+:::. .::MMMMM ..
+          .MM::::: ._. :::::MM.
+             MMMM;:::::;MMMM
+      -MM        MMMMMMM
+      ^  M+     MMMMMMMMM
+          MMMMMMM MM MM MM
+               MM MM MM MM
+               MM MM MM MM
+            .~~MM~MM~MM~MM~~.
+         ~~~~MM:~MM~~~MM~:MM~~~~
+        ~~~~~~==~==~~~==~==~~~~~~
+         ~~~~~~==~==~==~==~~~~~~
+             :~==~==~==~==~~

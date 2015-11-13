@@ -1,0 +1,37 @@
+{
+  "name": "gh-get",
+  "version": "1.0.0",
+  "description": "Github read-only swissknife command-line tool.",
+  "main": "cli.js",
+  "bin": {
+    "gh-get": "cli.js"
+  },
+  "dependencies": {
+    "chalk": "^1.1.1",
+    "gh-got": "^2.2.0",
+    "inquirer": "^0.11.0",
+    "lodash": "^3.10.1",
+    "nconf": "^0.8.2",
+    "titleize": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node cli.js",
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HQarroum/gh-get.git"
+  },
+  "keywords": [
+    "Github",
+    "command-line",
+    "tool"
+  ],
+  "author": "Halim Qarroum <hqm.post@gmail.com> (http://halim.qarroum.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HQarroum/gh-get/issues"
+  },
+  "homepage": "https://github.com/HQarroum/gh-get#readme"
+}
