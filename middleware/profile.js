@@ -43,6 +43,12 @@ var displayProfile = function (user) {
     });
 };
 
+/**
+ * The `profile` middleware entry point.
+ * @param input the input data store.
+ * @param output the middleware output
+ * @param next the callback to the next middleware
+ */
 module.exports = function  (input, output, next) {
     var action = input.get('answers:action');
 

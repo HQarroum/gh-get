@@ -14,5 +14,5 @@ gist.list = function (input) {
  * Gists of the given user.
  */
 gist.get = function (input) {
-    return got('gists/' + input.get('gist:id'), input.headers);
+    return got('gists/' + input.get('answers:path'), input.headers);
 };

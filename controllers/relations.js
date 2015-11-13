@@ -1,3 +1,4 @@
+var _        = require('lodash');
 var got      = require('gh-got');
 var relation = module.exports;
 
@@ -45,7 +46,7 @@ relation.following.list = function (input) {
  * following him.
  */
 relation.unfollowers.list = function (input) {
-    return Promise.all([getFollowers(input), getFollowing(input)]).then(function (results) {
+    return Promise.all([relation.followers.list(input), relation.following.list(input)]).then(function (results) {
         return difference(results[0].body, results[1].body);
     });
 };

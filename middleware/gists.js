@@ -44,11 +44,11 @@ var promptGist = function (gists) {
             {
                 message: 'Which Gist are you interested in ?',
                 type: 'list',
-                name: 'gist:description',
+                name: 'path',
                 choices: sanitized(gists)
             }
         ], function (answers) {
-            resolve(_.findWhere(gists, { description: answers['gist:description'] }).id);
+            resolve(_.findWhere(gists, { description: answers.path }).id);
         });
     });
 };
@@ -106,17 +106,18 @@ var displayGists = function (input, next) {
  * @param next the next middleware trigger
  */
 var displayGist = function (input, next) {
-    var name = input.get('gist:id');
+    var name = input.get('answers:path');
 
     if (name) {
         gist.get(input).then(function (response) {
             entry(response.body);
+            return promptFiles(response.body.files);
         }).catch(next);
     } else {
         gist.list(input).then(function (response) {
             return promptGist(response.body);
         }).then(function (id) {
-            input.set('gist:id', id);
+            input.set('answers:path', id);
             return gist.get(input);
         }).then(function (response) {
             entry(response.body);
@@ -126,7 +127,10 @@ var displayGist = function (input, next) {
 };
 
 /**
- * The middleware entry point.
+ * The `gists` middleware entry point.
+ * @param input the input data store.
+ * @param output the middleware output
+ * @param next the callback to the next middleware
  */
 module.exports = function  (input, output, next) {
     var action = input.get('answers:action');
