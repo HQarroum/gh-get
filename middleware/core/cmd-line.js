@@ -34,7 +34,7 @@ var parseInput = (argument) => {
     return answers;
 };
 
-var resolveInput = function (input) {
+var resolveInput = (input) => {
     var store = input.stores.argv.store._;
 
     if (!store || !store.length) {

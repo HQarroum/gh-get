@@ -8,14 +8,10 @@ let repos = module.exports;
  * the given user and the given name.
  * @param input
  */
-repos.get = (input) => {
-    return got('repos/' + input.get('answers:username') + '/' + input.get('answers:path'), input.headers);
-};
+repos.get = (input) => got(`repos/${input.get('answers:username')}/${input.get('answers:path')}`, input.headers);
 
 /**
  * Returns a promise to the list of up to 100 public
  * repositories of the given user.
  */
-repos.list = (input) => {
-    return got('users/' + input.get('answers:username') + '/repos?per_page=100', input.headers);
-};
+repos.list = (input) => got(`users/${input.get('answers:username')}/repos?per_page=100`, input.headers);

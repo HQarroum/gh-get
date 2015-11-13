@@ -40,7 +40,7 @@ var setCredentials = (input, credentials) => {
  * @returns {Promise} a promise to the user
  * credentials.
  */
-var promptCredentials = () => new Promise(function (resolve) {
+var promptCredentials = () => new Promise((resolve) => {
     inquirer.prompt([
         {
             message: 'Please enter your login (e.g HQarroum)',
@@ -61,7 +61,7 @@ var promptCredentials = () => new Promise(function (resolve) {
  * and an un-authenticated session.
  * @returns {Promise} a promise to the user response.
  */
-var promptAuthentication = () => new Promise(function (resolve) {
+var promptAuthentication = () => new Promise((resolve) => {
     inquirer.prompt([
         {
             message: 'Would you like to continue as an authenticated user ?',
@@ -76,11 +76,9 @@ var promptAuthentication = () => new Promise(function (resolve) {
  * himself, and in this case, asks him his credentials.
  * @returns {Promise} a promise to the user response
  */
-var prompt = () => promptAuthentication().then(function (answers) {
+var prompt = () => promptAuthentication().then((answers) => {
     if (answers.authenticate) {
-        return promptCredentials().then(function (credentials) {
-            return _.assign(answers, credentials);
-        });
+        return promptCredentials().then((credentials) => _.assign(answers, credentials));
     }
     return answers;
 });
@@ -99,7 +97,7 @@ module.exports = (input, output, next) => {
         setCredentials(input, encode(login, password));
         return next();
     }
-    prompt().then(function (answers) {
+    prompt().then((answers) => {
         if (!answers.authenticate) {
             return next();
         }

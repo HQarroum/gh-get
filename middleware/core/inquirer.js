@@ -18,7 +18,7 @@ var validator = (message) => (value) => (value && value.length > 0) || message;
 /**
  * Displays the octocat logo.
  */
-var octocat = function () {
+var octocat = () => {
     var name = path.join(__dirname, '..', '..', 'assets', 'octocat.txt');
     console.log(chalk.yellow(
       fs.readFileSync(name, 'utf8')
@@ -38,7 +38,7 @@ var exit = function () {
  * interested in.
  * @returns {Promise} a promise to the given username.
  */
-var promptUsername = () => new Promise(function (resolve) {
+var promptUsername = () => new Promise((resolve) => {
     inquirer.prompt([{
         message: 'Which user are you interested in ? (e.g HQarroum)',
         name: 'username',
@@ -50,7 +50,7 @@ var promptUsername = () => new Promise(function (resolve) {
  * Prompts the user to choose an action.
  * @returns {Promise} a promise to the user action.
  */
-var promptAction = () => new Promise(function (resolve) {
+var promptAction = () => new Promise((resolve) => {
     octocat();
     inquirer.prompt([{
         message: 'What would you like to do ?',
@@ -73,11 +73,9 @@ var promptAction = () => new Promise(function (resolve) {
  * Asks the user what action he would like to perform.
  * @returns {Promise} a promise to the user response
  */
-var prompt = () => promptAction().then(function (answers) {
+var prompt = () => promptAction().then((answers) => {
     if (answers.action !== 'Quit' && !answers.username) {
-        return promptUsername().then(function (username) {
-            return _.assign(answers, username);
-        });
+        return promptUsername().then((username) => _.assign(answers, username));
     }
     return answers;
 });
@@ -97,7 +95,7 @@ module.exports = (input, output, next) => {
         // the user answers.
         return next();
     }
-    prompt().then(function (answers) {
+    prompt().then((answers) => {
         if (answers.action === 'Quit') {
             exit();
         }

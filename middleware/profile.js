@@ -1,21 +1,8 @@
 'use strict';
 
-var titleize     = require('titleize');
 var chalk        = require('chalk');
 var ImageToAscii = require('image-to-ascii');
 var profile      = require('../controllers/profile');
-
-/**
- * Dumps a key/value pair association on the
- * standard output.
- */
-var entry = (key, value) => {
-    if (key && value) {
-        console.log(
-            chalk.bold(titleize(key)) + ':', value
-        );
-    }
-};
 
 /**
  * Returns a promise to the ASCII version of the user avatar.
@@ -40,17 +27,17 @@ var getImage = (user) => new Promise((resolve, reject) => {
  * Displays the user profile information.
  * @param user the user object
  */
-var displayInfo = (user) => {
-    console.log('\t' + chalk.bold(user.public_repos), 'repositories');
-    console.log('\t' + chalk.bold(user.followers), 'followers');
-    console.log('\t' + chalk.bold(user.following), 'following', '\n');
-    entry('name', user.name + ' (' + user.login + ')');
-    entry('email', user.email);
-    entry('company', user.company);
-    entry('location', user.location);
-    entry('website', user.blog);
-    entry('bio', user.bio);
-    entry('profile address', user.html_url);
+var displayInfo = (user, out) => {
+    out.log('\t' + chalk.bold(user.public_repos), 'repositories');
+    out.log('\t' + chalk.bold(user.followers), 'followers');
+    out.log('\t' + chalk.bold(user.following), 'following', '\n');
+    out.pair('name', user.name + ' (' + user.login + ')');
+    out.pair('email', user.email);
+    out.pair('company', user.company);
+    out.pair('location', user.location);
+    out.pair('website', user.blog);
+    out.pair('bio', user.bio);
+    out.pair('profile address', user.html_url);
 };
 
 /**
@@ -58,12 +45,12 @@ var displayInfo = (user) => {
  * the standard output.
  * @param user the user object
  */
-var displayProfile = (user) => {
-    console.log();
+var displayProfile = (user, out) => {
+    out.log();
     getImage(user).then((image) => {
-        console.log(image);
-        displayInfo(user);
-    }).catch(() => displayInfo(user));
+        out.log(image);
+        displayInfo(user, out);
+    }).catch(() => displayInfo(user, out));
 };
 
 /**
@@ -78,7 +65,5 @@ module.exports = (input, output, next) => {
     if (action !== 'Consult the profile page of a user') {
         return next();
     }
-    profile.get(input)
-      .then((response) => displayProfile(response.body))
-      .catch(next);
+    profile.get(input).then((response) => displayProfile(response.body, output)).catch(next);
 };

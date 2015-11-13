@@ -2,12 +2,13 @@
 
 'use strict';
 
-let nconf = require('nconf');
-let fs    = require('fs');
-let path  = require('path');
-let chalk = require('chalk');
-let Chain = require('middleware-chain');
-let dir   = path.join(__dirname, 'middleware');
+let nconf  = require('nconf');
+let fs     = require('fs');
+let path   = require('path');
+let chalk  = require('chalk');
+let Chain  = require('middleware-chain');
+let output = require('./formatter');
+let dir    = path.join(__dirname, 'middleware');
 
 /**
  * Instantiating a new chain.
@@ -57,4 +58,4 @@ chain.use((err, input, output, next) => {
 /**
  * Triggering the middleware chain.
  */
-chain.handle(nconf, {});
+chain.handle(nconf, output);

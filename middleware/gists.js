@@ -8,7 +8,7 @@ var gist     = require('../controllers/gists');
 /**
  * Displays information about a Gist.
  */
-var entry = function (gist) {
+var entry = (gist) => {
     console.log(
         chalk.bold.blue(' *'),
         chalk.bold.underline.magenta('Gist', gist.id),
@@ -22,7 +22,7 @@ var entry = function (gist) {
     );
 };
 
-var sanitized = (gists) =>_.map(gists, function (gist) {
+var sanitized = (gists) =>_.map(gists, (gist) => {
     var output = new String(gist.description).trim()
       .replace(/\r?\n/g, ' ');
 
@@ -38,7 +38,7 @@ var sanitized = (gists) =>_.map(gists, function (gist) {
  * by the current user.
  * @returns {Promise} a promise to the chosen Gist.
  */
-var promptGist = (gists) => new Promise(function (resolve) {
+var promptGist = (gists) => new Promise((resolve) => {
     inquirer.prompt([
         {
             message: 'Which Gist are you interested in ?',
@@ -46,7 +46,7 @@ var promptGist = (gists) => new Promise(function (resolve) {
             name: 'path',
             choices: sanitized(gists)
         }
-    ], function (answers) {
+    ], (answers) => {
         resolve(_.findWhere(gists, { description: answers.path }).id);
     });
 });
@@ -57,7 +57,7 @@ var promptGist = (gists) => new Promise(function (resolve) {
  * @param files the list of files part of the Gist.
  * @returns {Promise} a promise to the chosen file.
  */
-var promptFiles = (files) => new Promise(function (resolve) {
+var promptFiles = (files) => new Promise((resolve) => {
     inquirer.prompt([
         {
             message: 'Which file are you interested in ?',
@@ -66,7 +66,7 @@ var promptFiles = (files) => new Promise(function (resolve) {
             choices: _.keys(files)
         }
     ], (answers) => {
-        _.each(answers.name, function (name) {
+        _.each(answers.name, (name) => {
             console.log();
             console.log(chalk.bold(chalk.blue('* '), chalk.magenta(name)), '\n');
             console.log(files[name].content);
@@ -84,10 +84,10 @@ var promptFiles = (files) => new Promise(function (resolve) {
 var displayGists = (input, next) => {
     const username = input.get('answers:username');
 
-    gist.list(input).then(function (response) {
+    gist.list(input).then((response) => {
         if (response.body.length > 0) {
             console.log('Here is a list of', chalk.underline(username) + '\'s Gists :\n');
-            response.body.forEach(function (follower) {
+            response.body.forEach((follower) => {
                 entry(follower);
             });
         } else {
@@ -105,20 +105,19 @@ var displayGist = (input, next) => {
     const name = input.get('answers:path');
 
     if (name) {
-        gist.get(input).then(function (response) {
+        gist.get(input).then((response) => {
             entry(response.body);
             return promptFiles(response.body.files);
         }).catch(next);
     } else {
-        gist.list(input).then(function (response) {
-            return promptGist(response.body);
-        }).then(function (id) {
+        gist.list(input).then((response) => promptGist(response.body))
+          .then((id) => {
             input.set('answers:path', id);
             return gist.get(input);
-        }).then(function (response) {
+          }).then((response) => {
             entry(response.body);
             return promptFiles(response.body.files);
-        }).catch(next);
+          }).catch(next);
     }
 };
 

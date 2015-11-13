@@ -5,10 +5,10 @@ let got      = require('gh-got');
 let relation = module.exports;
 
 /**
- * Namespaces identifying the relations.
+ * Namespaces identifying the kind of relations.
  */
-relation.followers = {};
-relation.following = {};
+relation.followers   = {};
+relation.following   = {};
 relation.unfollowers = {};
 
 /**
@@ -30,25 +30,20 @@ var difference = (followers, following) => {
  * @return a promise to the list of up to 100 followers
  * of the given user.
  */
-relation.followers.list = (input) => {
-    return got('users/' + input.get('answers:username') + '/followers?per_page=100', input.headers);
-};
+relation.followers.list = (input) => got(`users/${input.get('answers:username')}/followers?per_page=100`, input.headers);
 
 /**
  * @return a promise to the list of up to 100 people
  * being followed by the given user.
  */
-relation.following.list = (input) => {
-    return got('users/' + input.get('answers:username') + '/following?per_page=100', input.headers);
-};
+relation.following.list = (input) => got(`users/${input.get('answers:username')}/following?per_page=100`, input.headers);
 
 /**
  * @return a promise to the list of users being
  * followed by the given user, but which are not
  * following him.
  */
-relation.unfollowers.list = (input) => {
-    return Promise.all([relation.followers.list(input), relation.following.list(input)]).then((results) => {
-        return difference(results[0].body, results[1].body);
-    });
-};
+relation.unfollowers.list = (input) => Promise.all([
+    relation.followers.list(input),
+    relation.following.list(input)
+]).then((results) => difference(results[0].body, results[1].body));

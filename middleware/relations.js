@@ -45,12 +45,10 @@ var displayFollowings = (input, next) => {
 var displayFollowers = (input, next) => {
     const username = input.get('answers:username');
 
-    relations.followers.list(input).then(function (response) {
+    relations.followers.list(input).then((response) => {
         if (response.body.length > 0) {
             console.log('Users currently following', chalk.underline(username), ':');
-            response.body.forEach(function (user) {
-                entry(user);
-            });
+            response.body.forEach((user) => entry(user));
         } else {
             console.log('The given user has no followers');
         }
@@ -66,11 +64,9 @@ var displayFollowers = (input, next) => {
 var displayUnfollowers = (input, next) => {
     relations.unfollowers.list(input).then((unfollowers) => {
         if (unfollowers.length > 0) {
-            unfollowers.forEach(function (user) {
-                entry(user);
-            });
+            unfollowers.forEach((user) => entry(user));
         } else {
-            console.log('There given user does not follow any user not following him back');
+            console.log('The given user does not follow any user not following him back');
         }
     }).catch(next);
 };
