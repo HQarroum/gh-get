@@ -3,7 +3,7 @@ var _         = require('lodash');
 var relations = require('../controllers/relations');
 
 /**
- * Displays information about a given follower.
+ * Displays information about a follower.
  */
 var entry = function (follower) {
     if (_.isObject(follower)) {
