@@ -28,9 +28,9 @@ var getImage = (user) => new Promise((resolve, reject) => {
  * @param user the user object
  */
 var displayInfo = (user, out) => {
-    out.log('\t' + chalk.bold(user.public_repos), 'repositories');
-    out.log('\t' + chalk.bold(user.followers), 'followers');
-    out.log('\t' + chalk.bold(user.following), 'following', '\n');
+    out.log(`\t ${chalk.bold(user.public_repos)} repositories`);
+    out.log(`\t ${chalk.bold(user.followers)} followers`);
+    out.log(`\t ${chalk.bold(user.following)} following\n`);
     out.pair('name', user.name + ' (' + user.login + ')');
     out.pair('email', user.email);
     out.pair('company', user.company);

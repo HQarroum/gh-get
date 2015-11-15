@@ -8,7 +8,7 @@ var gist     = require('../controllers/gists');
 /**
  * Displays information about a Gist.
  */
-var entry = (gist) => {
+var display = (gist) => {
     console.log(
         chalk.bold.blue(' *'),
         chalk.bold.underline.magenta('Gist', gist.id),
@@ -86,9 +86,8 @@ var displayGists = (input, next) => {
 
     gist.list(input).then((response) => {
         if (response.body.length > 0) {
-            console.log('Here is a list of', chalk.underline(username) + '\'s Gists :\n');
             response.body.forEach((follower) => {
-                entry(follower);
+                display(follower);
             });
         } else {
             console.log('This user does not have any public Gist');
@@ -106,7 +105,7 @@ var displayGist = (input, next) => {
 
     if (name) {
         gist.get(input).then((response) => {
-            entry(response.body);
+            display(response.body);
             return promptFiles(response.body.files);
         }).catch(next);
     } else {
@@ -115,7 +114,7 @@ var displayGist = (input, next) => {
             input.set('answers:path', id);
             return gist.get(input);
           }).then((response) => {
-            entry(response.body);
+            display(response.body);
             return promptFiles(response.body.files);
           }).catch(next);
     }

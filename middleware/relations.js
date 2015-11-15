@@ -7,32 +7,22 @@ var relations = require('../controllers/relations');
 /**
  * Displays information about a given follower.
  */
-var entry = (follower) => {
-    if (_.isObject(follower)) {
-        console.log(
-          chalk.bold.blue(' *'),
-          follower.login,
-          chalk.green('(' + follower.id + ')')
-        );
-    } else {
-        console.log(chalk.bold.blue(' *'), follower);
-    }
-};
+var display = (follower, out) => _.isObject(follower) ? out.entry(`${follower.login} (${follower.id})`) : out.entry(follower);
 
 /**
  * Displays up to 100 users followed by the given user.
  * @param input the chain input
  * @param next the next middleware trigger
  */
-var displayFollowings = (input, next) => {
+var displayFollowings = (input, out, next) => {
     const username = input.get('answers:username');
 
-    relations.following.list(input).then((response) => {
+    relations.following.list(username, input.headers).then((response) => {
         if (response.body.length > 0) {
-            console.log('Users being followed by', chalk.underline(username), ':');
-            response.body.forEach((user) => entry(user));
+            out.log(`Users being followed by ${username}:`);
+            response.body.forEach((user) => display(user, out));
         } else {
-            console.log('The given user is not following anyone');
+            out.log('The given user is not following anyone');
         }
     }).catch(next);
 };
@@ -42,15 +32,15 @@ var displayFollowings = (input, next) => {
  * @param input the chain input
  * @param next the next middleware trigger
  */
-var displayFollowers = (input, next) => {
+var displayFollowers = (input, out, next) => {
     const username = input.get('answers:username');
 
-    relations.followers.list(input).then((response) => {
+    relations.followers.list(username, input.headers).then((response) => {
         if (response.body.length > 0) {
-            console.log('Users currently following', chalk.underline(username), ':');
-            response.body.forEach((user) => entry(user));
+            out.log('Users currently following', chalk.underline(username), ':');
+            response.body.forEach((user) => display(user, out));
         } else {
-            console.log('The given user has no followers');
+            out.log('The given user has no followers');
         }
     }).catch(next);
 };
@@ -61,12 +51,14 @@ var displayFollowers = (input, next) => {
  * @param input the chain input
  * @param next the next middleware trigger
  */
-var displayUnfollowers = (input, next) => {
-    relations.unfollowers.list(input).then((unfollowers) => {
+var displayUnfollowers = (input, out, next) => {
+    const username = input.get('answers:username');
+
+    relations.unfollowers.list(username, input.headers).then((unfollowers) => {
         if (unfollowers.length > 0) {
-            unfollowers.forEach((user) => entry(user));
+            unfollowers.forEach((user) => display(user, out));
         } else {
-            console.log('The given user does not follow any user not following him back');
+            out.log('The given user does not follow any user not following him back');
         }
     }).catch(next);
 };
@@ -81,11 +73,11 @@ module.exports = (input, output, next) => {
     var action = input.get('answers:action');
 
     if (action === 'List the people followed by a user') {
-        displayFollowings(input);
+        displayFollowings(input, output, next);
     } else if (action === 'List the followers a user has') {
-        displayFollowers(input, next);
+        displayFollowers(input, output, next);
     } else if (action === 'List the people followed by a user but not following him') {
-        displayUnfollowers(input, next);
+        displayUnfollowers(input, output, next);
     } else {
         next();
     }
