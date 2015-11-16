@@ -7,20 +7,10 @@ var gist     = require('../controllers/gists');
 
 /**
  * Displays information about a Gist.
+ * @param gist the Gist to display
+ * @param out the middleware output
  */
-var display = (gist) => {
-    console.log(
-        chalk.bold.blue(' *'),
-        chalk.bold.underline.magenta('Gist', gist.id),
-        chalk.bold.blue('(' + _.keys(gist.files).length, 'file(s))')
-    );
-    console.log(chalk.bold.blue(' *', gist.html_url));
-    console.log(
-      chalk.bold.blue(' *'),
-      chalk.bold.green(gist.description ? gist.description : "(None)"),
-      '\n'
-    );
-};
+var display = (gist, out) => out.render('gists', { gist });
 
 var sanitized = (gists) =>_.map(gists, (gist) => {
     var output = new String(gist.description).trim()
@@ -79,15 +69,14 @@ var promptFiles = (files) => new Promise((resolve) => {
 /**
  * Displays up to 100 Gists of the given user.
  * @param input the chain input
+ * @param out the middleware output
  * @param next the next middleware trigger
  */
-var displayGists = (input, next) => {
-    const username = input.get('answers:username');
-
+var displayGists = (input, out, next) => {
     gist.list(input).then((response) => {
         if (response.body.length > 0) {
             response.body.forEach((follower) => {
-                display(follower);
+                display(follower, out);
             });
         } else {
             console.log('This user does not have any public Gist');
@@ -98,14 +87,15 @@ var displayGists = (input, next) => {
 /**
  * Displays information about the Gist of the given user.
  * @param input the chain input
+ * @param out the middleware output
  * @param next the next middleware trigger
  */
-var displayGist = (input, next) => {
+var displayGist = (input, out, next) => {
     const name = input.get('answers:path');
 
     if (name) {
         gist.get(input).then((response) => {
-            display(response.body);
+            display(response.body, out);
             return promptFiles(response.body.files);
         }).catch(next);
     } else {
@@ -114,7 +104,7 @@ var displayGist = (input, next) => {
             input.set('answers:path', id);
             return gist.get(input);
           }).then((response) => {
-            display(response.body);
+            display(response.body, out);
             return promptFiles(response.body.files);
           }).catch(next);
     }
@@ -130,9 +120,9 @@ module.exports = (input, output, next) => {
     const action = input.get('answers:action');
 
     if (action === 'List the Gists of a user') {
-        displayGists(input, next);
+        displayGists(input, output, next);
     } else if (action === 'Retrieve the Gist of a user') {
-        displayGist(input, next);
+        displayGist(input, output, next);
     } else {
         next();
     }

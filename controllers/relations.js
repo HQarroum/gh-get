@@ -17,14 +17,11 @@ relation.unfollowers = {};
  * and which are not following back.
  * This method also sorts the list by login.
  */
-var difference = (followers, following) => {
-    return _(_.pluck(following, 'login'))
+var difference = (followers, following) =>
+  _(_.pluck(following, 'login'))
       .difference(_.pluck(followers, 'login'))
-      .sortBy(function (login) {
-          return login.toLowerCase();
-      })
+      .sortBy((login) => login.toLowerCase())
       .value();
-};
 
 /**
  * @return a promise to the list of up to 100 followers

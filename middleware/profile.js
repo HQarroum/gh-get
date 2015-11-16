@@ -4,6 +4,13 @@ var ImageToAscii = require('image-to-ascii');
 var profile      = require('../controllers/profile');
 
 /**
+ * Displays the user profile information.
+ * @param user the user object
+ * @param out the output
+ */
+var displayInfo = (user, out) => out.render('user-info', { user });
+
+/**
  * Returns a promise to the ASCII version of the user avatar.
  * @param user the user object
  * @return a promise
@@ -21,15 +28,6 @@ var getImage = (user) => new Promise((resolve, reject) => {
         resolve(converted);
     });
 });
-
-/**
- * Displays the user profile information.
- * @param user the user object
- * @param out the output
- */
-var displayInfo = (user, out) => {
-    out.render('user-info', { user });
-};
 
 /**
  * Displays the user profile information on

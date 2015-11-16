@@ -5,13 +5,12 @@ var repos = require('../controllers/repositories');
 /**
  * Displays information about a repository.
  */
-var display = (repository, out) => {
-    out.render('repositories', { repository });
-};
+var display = (repository, out) => out.render('repositories', { repository });
 
 /**
  * Displays up to 100 repositories of the given user.
  * @param input the chain input
+ * @param out the middleware output
  */
 var displayRepositories = (input, out) => {
     const username = input.get('answers:username');
