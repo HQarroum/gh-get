@@ -3,7 +3,7 @@
 </p>
 
 # gh-get
-> Github read-only swissknife command-line tool.
+> Github swissknife command-line tool.
 
 Current version: **1.0.0**
 
