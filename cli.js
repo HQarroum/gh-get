@@ -7,7 +7,7 @@ let fs     = require('fs');
 let path   = require('path');
 let chalk  = require('chalk');
 let Chain  = require('middleware-chain');
-let output = require('./formatter');
+let output = require('./views/formatter');
 let dir    = path.join(__dirname, 'middleware');
 
 /**

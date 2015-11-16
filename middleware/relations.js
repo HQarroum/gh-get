@@ -1,17 +1,16 @@
 'use strict';
 
-var chalk     = require('chalk');
-var _         = require('lodash');
 var relations = require('../controllers/relations');
 
 /**
  * Displays information about a given follower.
  */
-var display = (follower, out) => _.isObject(follower) ? out.entry(`${follower.login} (${follower.id})`) : out.entry(follower);
+var display = (follower, out) => out.render('relations', { follower });
 
 /**
  * Displays up to 100 users followed by the given user.
  * @param input the chain input
+ * @param out the output
  * @param next the next middleware trigger
  */
 var displayFollowings = (input, out, next) => {
@@ -19,7 +18,6 @@ var displayFollowings = (input, out, next) => {
 
     relations.following.list(username, input.headers).then((response) => {
         if (response.body.length > 0) {
-            out.log(`Users being followed by ${username}:`);
             response.body.forEach((user) => display(user, out));
         } else {
             out.log('The given user is not following anyone');
@@ -30,6 +28,7 @@ var displayFollowings = (input, out, next) => {
 /**
  * Displays up to 100 users following the given user.
  * @param input the chain input
+ * @param out the output
  * @param next the next middleware trigger
  */
 var displayFollowers = (input, out, next) => {
@@ -37,7 +36,6 @@ var displayFollowers = (input, out, next) => {
 
     relations.followers.list(username, input.headers).then((response) => {
         if (response.body.length > 0) {
-            out.log('Users currently following', chalk.underline(username), ':');
             response.body.forEach((user) => display(user, out));
         } else {
             out.log('The given user has no followers');
@@ -49,6 +47,7 @@ var displayFollowers = (input, out, next) => {
  * Displays up to 100 users followed by the given user,
  * but not following him back.
  * @param input the chain input
+ * @param out the output
  * @param next the next middleware trigger
  */
 var displayUnfollowers = (input, out, next) => {

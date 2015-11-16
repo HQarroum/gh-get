@@ -1,6 +1,5 @@
 'use strict';
 
-var chalk        = require('chalk');
 var ImageToAscii = require('image-to-ascii');
 var profile      = require('../controllers/profile');
 
@@ -26,24 +25,17 @@ var getImage = (user) => new Promise((resolve, reject) => {
 /**
  * Displays the user profile information.
  * @param user the user object
+ * @param out the output
  */
 var displayInfo = (user, out) => {
-    out.log(`\t ${chalk.bold(user.public_repos)} repositories`);
-    out.log(`\t ${chalk.bold(user.followers)} followers`);
-    out.log(`\t ${chalk.bold(user.following)} following\n`);
-    out.pair('name', user.name + ' (' + user.login + ')');
-    out.pair('email', user.email);
-    out.pair('company', user.company);
-    out.pair('location', user.location);
-    out.pair('website', user.blog);
-    out.pair('bio', user.bio);
-    out.pair('profile address', user.html_url);
+    out.render('user-info', { user });
 };
 
 /**
  * Displays the user profile information on
  * the standard output.
  * @param user the user object
+ * @param out the output
  */
 var displayProfile = (user, out) => {
     out.log();
@@ -65,5 +57,7 @@ module.exports = (input, output, next) => {
     if (action !== 'Consult the profile page of a user') {
         return next();
     }
-    profile.get(input).then((response) => displayProfile(response.body, output)).catch(next);
+    profile.get(input)
+      .then((response) => displayProfile(response.body, output))
+      .catch(next);
 };

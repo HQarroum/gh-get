@@ -6,11 +6,7 @@ var repos = require('../controllers/repositories');
  * Displays information about a repository.
  */
 var display = (repository, out) => {
-    out.title(repository.name);
-    out.description(repository.description, '(None)');
-    out.info(repository.html_url);
-    out.info(`Project homepage: ${repository.homepage || '(None)'}`);
-    out.info(`Language: ${repository.language || '(Not specified)'}`);
+    out.render('repositories', { repository });
 };
 
 /**
