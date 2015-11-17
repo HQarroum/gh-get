@@ -5,12 +5,11 @@ let got     = require('gh-got');
 let request = module.exports;
 
 request.getParams = (input) => {
-    let copy = input.params || {};
+    let params = input.params || {};
 
-    copy['per_page'] = input.get('limit');
-    delete copy.limit;
+    params['per_page'] = input.get('limit');
     return _.reduce(
-      _.map(copy, (v, k) => `${k}=${v}`), (acc, c) => `${acc}&${c}`
+      _.map(params, (v, k) => `${k}=${v}`), (acc, c) => `${acc}&${c}`
     );
 };
 
