@@ -10,7 +10,8 @@ var map = {
     'followings': 'List the people followed by a user',
     'unfollowers': 'List the people followed by a user but not following him',
     'gists': 'List the Gists of a user',
-    'gist': 'Retrieve the Gist of a user'
+    'gist': 'Retrieve the Gist of a user',
+    'search': 'Search for a repository or a user'
 };
 
 var parseInput = (argument) => {

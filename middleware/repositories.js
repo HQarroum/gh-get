@@ -13,8 +13,7 @@ var display = (repository, out) => out.render('repositories', { repository });
  * @param out the middleware output
  */
 var displayRepositories = (input, out) => {
-    const username = input.get('answers:username');
-    const path     = input.get('answers:path');
+    const path = input.get('answers:path');
 
     if (path) {
         return repos.get(input).then((response) => display(response.body, out));
@@ -34,8 +33,7 @@ module.exports = (input, output, next) => {
     const action = input.get('answers:action');
 
     if (action === 'List the repositories of a user') {
-        displayRepositories(input, output).catch(next);
-    } else {
-        next();
+        return displayRepositories(input, output).catch(next);
     }
+    next();
 };

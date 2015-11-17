@@ -59,3 +59,6 @@ chain.use((err, input, output, next) => {
  * Triggering the middleware chain.
  */
 chain.handle(nconf, output);
+
+//nconf.params = require('lodash').assign(nconf.params||{}, { q: 'foo' });
+//console.log(require('./controllers/request').getParams(nconf));

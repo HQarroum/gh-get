@@ -64,6 +64,7 @@ var promptAction = () => new Promise((resolve) => {
             'List the repositories of a user',
             'List the Gists of a user',
             'Retrieve the Gist of a user',
+            'Search for a repository or a user',
             'Quit'
         ]
     }], resolve);

@@ -1,7 +1,7 @@
 'use strict';
 
 let _        = require('lodash');
-let got      = require('gh-got');
+let request  = require('./request');
 let relation = module.exports;
 
 /**
@@ -27,13 +27,13 @@ var difference = (followers, following) =>
  * @return a promise to the list of up to 100 followers
  * of the given user.
  */
-relation.followers.list = (username, headers) => got(`users/${username}/followers?per_page=100`, headers);
+relation.followers.list = (input) => request.send(`users/${input.get('answers:username')}/followers`, input);
 
 /**
  * @return a promise to the list of up to 100 people
  * being followed by the given user.
  */
-relation.following.list = (username, headers) => got(`users/${username}/following?per_page=100`, headers);
+relation.following.list = (input) => request.send(`users/${input.get('answers:username')}/following`, input);
 
 /**
  * @return a promise to the list of users being

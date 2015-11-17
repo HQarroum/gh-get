@@ -1,10 +1,10 @@
 'use strict';
 
-let got     = require('gh-got');
+let request = require('./request');
 let profile = module.exports;
 
 /**
- * Retrieves the user object associated to the
+ * @return the user object associated with the
  * given user login.
  */
-profile.get = (input) => got(`users/${input.get('answers:username')}`, input.headers);
+profile.get = (input) => request.send(`users/${input.get('answers:username')}`, input);

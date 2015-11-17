@@ -1,8 +1,8 @@
 'use strict';
 
+var _        = require('lodash');
 var chalk    = require('chalk');
 var inquirer = require('inquirer');
-var _        = require('lodash');
 var gist     = require('../controllers/gists');
 
 /**
