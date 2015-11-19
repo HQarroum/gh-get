@@ -11,7 +11,7 @@ var map = {
     'unfollowers': 'List the people followed by a user but not following him',
     'gists': 'List the Gists of a user',
     'gist': 'Retrieve the Gist of a user',
-    'search': 'Search for a repository or a user'
+    'search': 'Search for repositories, users or code'
 };
 
 var parseInput = (argument) => {

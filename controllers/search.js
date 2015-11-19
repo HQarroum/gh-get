@@ -5,7 +5,7 @@ let request = require('./request');
 let search  = module.exports;
 
 search.prefix = (prefix, input) => {
-    input.params = _.assign(input.params||{}, { q: input.get('answers:token') });
+    input.params = _.assign(input.params||{}, { q: input.get('answers:path') });
     return request.send(`search/${prefix}`, input);
 };
 
@@ -19,4 +19,4 @@ search.user = (input) => search.prefix('user', input);
  * @return a promise to the result of the search of
  * repositories.
  */
-search.repo = (token, headers) => search.prefix('repositories', input);
+search.repo = (input) => search.prefix('repositories', input);
