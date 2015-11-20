@@ -5,7 +5,7 @@ var repos = require('../controllers/repositories');
 /**
  * Displays information about a repository.
  */
-var display = (repository, out) => out.render('repositories', { repository });
+var display = (repository, out) => out.render('repositories/information', repository);
 
 /**
  * Displays up to 100 repositories of the given user.

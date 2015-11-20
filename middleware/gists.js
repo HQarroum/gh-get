@@ -10,7 +10,7 @@ var gist     = require('../controllers/gists');
  * @param gist the Gist to display
  * @param out the middleware output
  */
-var display = (gist, out) => out.render('gists', { gist });
+var display = (gist, out) => out.render('gists/information', gist);
 
 var sanitized = (gists) =>_.map(gists, (gist) => {
     var output = new String(gist.description).trim()

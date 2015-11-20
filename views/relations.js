@@ -2,13 +2,18 @@
 
 var _ = require('lodash');
 
+/**
+ * Displays the information associated with a
+ * follower.
+ * @returns the formatted follower information
+ */
+var follower = (formatter, follower) => {
+    formatter.log(_.isObject(follower) ?
+      formatter.entry(`${follower.login} (${follower.id})`) :
+      formatter.entry(follower)
+    );
+};
+
 module.exports = {
-    render: function () {
-        let formatter = arguments[0];
-        let follower = arguments[1].follower;
-        return (_.isObject(follower) ?
-          formatter.entry(`${follower.login} (${follower.id})`) :
-          formatter.entry(follower)
-        );
-    }
+    render: { follower }
 };

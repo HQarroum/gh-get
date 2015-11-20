@@ -1,47 +1,13 @@
 'use strict';
 
-var ImageToAscii = require('image-to-ascii');
-var profile      = require('../controllers/profile');
+var profile = require('../controllers/profile');
 
 /**
  * Displays the user profile information.
  * @param user the user object
  * @param out the output
  */
-var displayInfo = (user, out) => out.render('user-info', { user });
-
-/**
- * Returns a promise to the ASCII version of the user avatar.
- * @param user the user object
- * @return a promise
- */
-var getImage = (user) => new Promise((resolve, reject) => {
-    ImageToAscii({
-        path: user.avatar_url,
-        size: {
-            height: '35%'
-        }
-    }, (err, converted) => {
-        if (err) {
-            return reject(err);
-        }
-        resolve(converted);
-    });
-});
-
-/**
- * Displays the user profile information on
- * the standard output.
- * @param user the user object
- * @param out the output
- */
-var displayProfile = (user, out) => {
-    out.log();
-    getImage(user).then((image) => {
-        out.log(image);
-        displayInfo(user, out);
-    }).catch(() => displayInfo(user, out));
-};
+var displayProfile = (user, out) => out.render('users/profile', user);
 
 /**
  * The `profile` middleware entry point.
@@ -50,12 +16,10 @@ var displayProfile = (user, out) => {
  * @param next the callback to the next middleware
  */
 module.exports = (input, output, next) => {
-    const action = input.get('answers:action');
-
-    if (action !== 'profile') {
-        return next();
+    if (input.get('answers:action') === 'profile') {
+        return profile.get(input)
+          .then((response) => displayProfile(response.body, output))
+          .catch(next);
     }
-    profile.get(input)
-      .then((response) => displayProfile(response.body, output))
-      .catch(next);
+    next();
 };

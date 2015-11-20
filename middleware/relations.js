@@ -5,7 +5,7 @@ var relations = require('../controllers/relations');
 /**
  * Displays information about a given follower.
  */
-var display = (follower, out) => out.render('relations', { follower });
+var display = (follower, out) => out.render('relations/follower', follower);
 
 /**
  * Displays up to 100 users followed by the given user.
@@ -13,7 +13,8 @@ var display = (follower, out) => out.render('relations', { follower });
  * @param out the output
  * @param next the next middleware trigger
  */
-var displayFollowings = (input, out, next) => relations.following.list(input).then((response) => {
+var displayFollowings = (input, out, next) => relations.following.list(input)
+  .then((response) => {
     if (response.body.length > 0) {
         response.body.forEach((user) => display(user, out));
     } else {
@@ -27,7 +28,8 @@ var displayFollowings = (input, out, next) => relations.following.list(input).th
  * @param out the output
  * @param next the next middleware trigger
  */
-var displayFollowers = (input, out, next) => relations.followers.list(input).then((response) => {
+var displayFollowers = (input, out, next) => relations.followers.list(input)
+  .then((response) => {
     if (response.body.length > 0) {
         response.body.forEach((user) => display(user, out));
     } else {
@@ -42,7 +44,8 @@ var displayFollowers = (input, out, next) => relations.followers.list(input).the
  * @param out the output
  * @param next the next middleware trigger
  */
-var displayUnfollowers = (input, out, next) => relations.unfollowers.list(input).then((unfollowers) => {
+var displayUnfollowers = (input, out, next) => relations.unfollowers.list(input)
+  .then((unfollowers) => {
     if (unfollowers.length > 0) {
         unfollowers.forEach((user) => display(user, out));
     } else {
@@ -57,7 +60,7 @@ var displayUnfollowers = (input, out, next) => relations.unfollowers.list(input)
  * @param next the callback to the next middleware
  */
 module.exports = (input, output, next) => {
-    var action = input.get('answers:action');
+    const action = input.get('answers:action');
 
     if (action === 'followings') {
         displayFollowings(input, output, next);
