@@ -32,7 +32,7 @@ var displayRepositories = (input, out) => {
 module.exports = (input, output, next) => {
     const action = input.get('answers:action');
 
-    if (action === 'List the repositories of a user') {
+    if (action === 'repositories') {
         return displayRepositories(input, output).catch(next);
     }
     next();

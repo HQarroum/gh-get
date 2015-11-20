@@ -52,7 +52,7 @@ var displayProfile = (user, out) => {
 module.exports = (input, output, next) => {
     const action = input.get('answers:action');
 
-    if (action !== 'Consult the profile page of a user') {
+    if (action !== 'profile') {
         return next();
     }
     profile.get(input)

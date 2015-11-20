@@ -1,60 +1,34 @@
 'use strict';
 
-var _     = require('lodash');
-var chalk = require('chalk');
+var _ = require('lodash');
 
-var map = {
-    'profile': 'Consult the profile page of a user',
-    'repositories': 'List the repositories of a user',
-    'followers': 'List the followers a user has',
-    'followings': 'List the people followed by a user',
-    'unfollowers': 'List the people followed by a user but not following him',
-    'gists': 'List the Gists of a user',
-    'gist': 'Retrieve the Gist of a user',
-    'search': 'Search for repositories, users or code'
-};
+/**
+ * Parses the given input and extracts the provided parameters.
+ * @param input the middleware input chain
+ * @returns a parameters object
+ */
+var resolveParams = (input) => {
+    const argument = input.stores.argv.store._ && input.stores.argv.store._[0];
 
-var parseInput = (argument) => {
-    var array = argument.split(':');
-    var answers = {};
+    if (argument) {
+        const groups = /([a-z]+)(:([a-z]+)(\/(.*))?)?/.exec(argument);
 
-    if (!map[array[0]]) {
-        console.warn(chalk.red.bold('[!] The given command could not be resolved by any module'));
-        return process.exit(0);
+        return _.omit({
+            action: groups[1],
+            identifier: groups[3],
+            path: groups[5]
+        }, _.isUndefined);
     }
-    answers.action = map[array[0]];
-    if (array[1]) {
-        var token = array[1].split('/');
-        answers.username = token[0];
-        if (token[1]) {
-            answers.path = _.reduce(token.splice(1), function (total, path) {
-                return total + '/' + path;
-            });
-        }
-    }
-    return answers;
-};
-
-var resolveInput = (input) => {
-    var store = input.stores.argv.store._;
-
-    if (!store || !store.length) {
-        return null;
-    }
-    return parseInput(store[0]);
 };
 
 module.exports = (input, output, next) => {
     const answers = input.get('answers');
-    const action  = resolveInput(input);
 
     if (answers && answers.action && answers.username) {
         // Another middleware already filled in
         // the user answers.
         return next();
     }
-    if (action) {
-        input.set('answers', action);
-    }
+    input.set('answers', resolveParams(input));
     next();
 };

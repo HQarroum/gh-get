@@ -7,6 +7,23 @@ var fs       = require('fs');
 var _        = require('lodash');
 
 /**
+ * A map between the inquirer display strings and their equivalent
+ * name used by middlewares along the chain.
+ */
+var map = {
+    'Consult the profile page of a user': 'profile',
+    'List the repositories of a user': 'repositories',
+    'List the followers a user has': 'followers',
+    'List the people followed by a user': 'followings',
+    'List the people followed by a user but not following him': 'unfollowers',
+    'List the Gists of a user': 'gists',
+    'Retrieve the Gist of a user': 'gist',
+    'Search for repositories, users or code': 'search',
+    'Get some help': 'help',
+    'Quit': 'quit'
+};
+
+/**
  * A predicate function used as a string validator for
  * inquirer.
  * @param message the message to display on a validation
@@ -26,14 +43,6 @@ var octocat = () => {
 };
 
 /**
- * Exits the program.
- */
-var exit = function () {
-    console.log(chalk.yellow('Goodbye !'));
-    process.exit(0);
-};
-
-/**
  * Prompts the user to enter the username he is
  * interested in.
  * @returns {Promise} a promise to the given username.
@@ -50,7 +59,10 @@ var promptUsername = () => new Promise((resolve) => {
  * Prompts the user to choose an action.
  * @returns {Promise} a promise to the user action.
  */
-var promptAction = () => new Promise((resolve) => {
+var promptAction = (input) => new Promise((resolve) => {
+    const action = input.get('answers:action');
+
+    if (action) return resolve(input.get('answers'));
     octocat();
     inquirer.prompt([{
         message: 'What would you like to do ?',
@@ -67,18 +79,10 @@ var promptAction = () => new Promise((resolve) => {
             'Search for repositories, users or code',
             'Quit'
         ]
-    }], resolve);
-});
-
-/**
- * Asks the user what action he would like to perform.
- * @returns {Promise} a promise to the user response
- */
-var prompt = () => promptAction().then((answers) => {
-    if (answers.action !== 'Quit' && !answers.username) {
-        return promptUsername().then((username) => _.assign(answers, username));
-    }
-    return answers;
+    }], (answers) => {
+        answers.action = map[answers.action];
+        resolve(answers);
+    });
 });
 
 /**
@@ -89,17 +93,7 @@ var prompt = () => promptAction().then((answers) => {
  * @param next a callback to call the next middleware
  */
 module.exports = (input, output, next) => {
-    const answers = input.get('answers');
-
-    if (_.isObject(answers)) {
-        // Another middleware already filled in
-        // the user answers.
-        return next();
-    }
-    prompt().then((answers) => {
-        if (answers.action === 'Quit') {
-            exit();
-        }
+    promptAction(input).then((answers) => {
         input.set('answers', answers);
         next();
     }).catch(next);

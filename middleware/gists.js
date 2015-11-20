@@ -119,9 +119,9 @@ var displayGist = (input, out, next) => {
 module.exports = (input, output, next) => {
     const action = input.get('answers:action');
 
-    if (action === 'List the Gists of a user') {
+    if (action === 'gists') {
         displayGists(input, output, next);
-    } else if (action === 'Retrieve the Gist of a user') {
+    } else if (action === 'gist') {
         displayGist(input, output, next);
     } else {
         next();

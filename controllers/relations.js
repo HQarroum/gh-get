@@ -27,20 +27,20 @@ var difference = (followers, following) =>
  * @return a promise to the list of up to 100 followers
  * of the given user.
  */
-relation.followers.list = (input) => request.send(`users/${input.get('answers:username')}/followers`, input);
+relation.followers.list = (input) => request.send(`users/${input.get('answers:identifier')}/followers`, input);
 
 /**
  * @return a promise to the list of up to 100 people
  * being followed by the given user.
  */
-relation.following.list = (input) => request.send(`users/${input.get('answers:username')}/following`, input);
+relation.following.list = (input) => request.send(`users/${input.get('answers:identifier')}/following`, input);
 
 /**
  * @return a promise to the list of users being
  * followed by the given user, but which are not
  * following him.
  */
-relation.unfollowers.list = (username, headers) => Promise.all([
-    relation.followers.list(username, headers),
-    relation.following.list(username, headers)
+relation.unfollowers.list = (input) => Promise.all([
+    relation.followers.list(input),
+    relation.following.list(input)
 ]).then((results) => difference(results[0].body, results[1].body));

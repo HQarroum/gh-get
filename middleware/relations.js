@@ -59,11 +59,11 @@ var displayUnfollowers = (input, out, next) => relations.unfollowers.list(input)
 module.exports = (input, output, next) => {
     var action = input.get('answers:action');
 
-    if (action === 'List the people followed by a user') {
+    if (action === 'followings') {
         displayFollowings(input, output, next);
-    } else if (action === 'List the followers a user has') {
+    } else if (action === 'followers') {
         displayFollowers(input, output, next);
-    } else if (action === 'List the people followed by a user but not following him') {
+    } else if (action === 'unfollowers') {
         displayUnfollowers(input, output, next);
     } else {
         next();
