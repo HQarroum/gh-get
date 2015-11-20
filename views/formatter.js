@@ -50,8 +50,27 @@ formatter.description = (desc, def) => formatter.entry_(desc, chalk.bold.green, 
 formatter.pair = (key, value) => `${chalk.bold(titleize(key))}: ${value||'(Not defined)'}`;
 
 /**
+ * Displays a warning.
+ */
+formatter.warn = (message) => console.log(chalk.bold.yellow('[!]', message));
+
+/**
+ * Displays an error.
+ */
+formatter.error = (message) => console.log(chalk.bold.red('[!]', message));
+
+/**
+ * Displays an error and exits the application.
+ */
+formatter.fatal = (message) => formatter.error(message) && process.exit(0);
+
+/**
  * Renders a template.
  */
 formatter.render = function () {
-    console.log(require('./' + arguments[0])(formatter, ...Array.prototype.slice.call(arguments, 1)));
+    console.log(
+      require(`./${arguments[0]}`).render(formatter, ...Array.prototype.slice.call(arguments, 1))
+    );
 };
+
+formatter.prompt = (name) => require(`./${name}`).prompt;

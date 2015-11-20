@@ -5,7 +5,6 @@
 let nconf  = require('nconf');
 let fs     = require('fs');
 let path   = require('path');
-let chalk  = require('chalk');
 let Chain  = require('middleware-chain');
 let output = require('./views/formatter');
 let dir    = path.join(__dirname, 'middleware');
@@ -44,7 +43,7 @@ fs.readdirSync(dir).forEach((file) => {
  * not resolved.
  */
 chain.use(() => {
-    console.warn(chalk.red.bold('[!] The given command could not be resolved by any module'));
+    output.warn('The given command could not be resolved by any module');
 });
 
 /**
@@ -52,13 +51,10 @@ chain.use(() => {
  * by a middleware.
  */
 chain.use((err, input, output, next) => {
-    console.error(chalk.red.bold('[!] An error was thrown by a module :', err));
+    output.error(`An error was thrown by a module : ${err}`);
 });
 
 /**
  * Triggering the middleware chain.
  */
 chain.handle(nconf, output);
-
-//nconf.params = require('lodash').assign(nconf.params||{}, { q: 'foo' });
-//console.log(require('./controllers/request').getParams(nconf));
