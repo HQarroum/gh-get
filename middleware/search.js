@@ -16,9 +16,9 @@ var startSearch = (input, output, next) => {
     const type = input.get('answers:identifier');
 
     if (type) {
-        return output.prompt('search').token(input)
+        return output.prompt('search/token', input)
           .then(() => search[type](input))
-          .then(output.prompt('search').users);
+          .then(output.prompt('search/users'));
     }
     return next(new Error(`Unknown search type: ${type}`));
 };
@@ -27,7 +27,7 @@ module.exports = (input, output, next) => {
     const action = input.get('answers:action');
 
     if (action === 'search') {
-        return output.prompt('search').type(input)
+        return output.prompt('search/type', input)
           .then(() => startSearch(input, output, next))
           .catch(next);
     }

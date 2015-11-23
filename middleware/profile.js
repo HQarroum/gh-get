@@ -17,7 +17,7 @@ var displayProfile = (user, out) => out.render('users/profile', user);
  */
 module.exports = (input, output, next) => {
     if (input.get('answers:action') === 'profile') {
-        return output.prompt('users').name(input)
+        return output.prompt('users/name', input)
           .then(() => profile.get(input))
           .then((response) => displayProfile(response.body, output))
           .catch(next);
