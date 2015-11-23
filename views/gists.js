@@ -1,7 +1,8 @@
 'use strict';
 
-var _        = require('lodash');
-var inquirer = require('inquirer');
+let _        = require('lodash');
+let chalk    = require('chalk');
+let inquirer = require('inquirer');
 
 /**
  * Displays the information associated with a
