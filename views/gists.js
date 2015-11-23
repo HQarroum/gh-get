@@ -24,7 +24,7 @@ var sanitize = (gist) => (gist ? new String(gist.description).trim().replace(/\r
  * by the current user.
  * @returns {Promise} a promise to the chosen Gist.
  */
-var gist = (formatter, input, gists) => new Promise((resolve) => {
+var list = (formatter, input, gists) => new Promise((resolve) => {
     const path = input.get('answers:path');
 
     if (path) return resolve(path);
@@ -64,6 +64,6 @@ var files = (formatter, files) => new Promise((resolve) => {
 });
 
 module.exports = {
-    prompt: { gist, files },
+    prompt: { list, files },
     render: { information }
 };
