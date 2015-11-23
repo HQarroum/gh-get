@@ -15,7 +15,7 @@ var information = (formatter, gist) => {
     `);
 };
 
-var sanitize = (gist) => (gist ? gist.description.trim().replace(/\r?\n/g, ' ') : '(Empty description)');
+var sanitize = (gist) => (gist ? new String(gist.description).trim().replace(/\r?\n/g, ' ') : '(Empty description)');
 
 /**
  * Prompts the user to choose between the different Gists available.
@@ -23,18 +23,16 @@ var sanitize = (gist) => (gist ? gist.description.trim().replace(/\r?\n/g, ' ') 
  * by the current user.
  * @returns {Promise} a promise to the chosen Gist.
  */
-var gist = (formatter, gists) => new Promise((resolve) => {
+var gist = (formatter, input, gists) => new Promise((resolve) => {
     const path = input.get('answers:path');
 
     if (path) return resolve(path);
-    inquirer.prompt([
-        {
-            message: 'Which Gist are you interested in ?',
-            type: 'list',
-            name: 'path',
-            choices: _.map(gists, sanitize)
-        }
-    ], (answers) => {
+    inquirer.prompt([{
+        message: 'Which Gist are you interested in ?',
+        type: 'list',
+        name: 'path',
+        choices: _.map(gists, sanitize)
+    }], (answers) => {
         resolve(input.set('answers:path', _.findWhere(gists, { description: answers.path }).id));
     });
 });

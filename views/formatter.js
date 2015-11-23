@@ -69,7 +69,7 @@ formatter.fatal = (message) => formatter.error(message) && process.exit(0);
  */
 formatter.render = function () {
     var path = arguments[0].split('/');
-    require(`./${path[0]}`).render[path[1]](formatter, ...Array.prototype.slice.call(arguments, 1));
+    return require(`./${path[0]}`).render[path[1]](formatter, ...Array.prototype.slice.call(arguments, 1));
 };
 
 /**
@@ -77,5 +77,5 @@ formatter.render = function () {
  */
 formatter.prompt = function () {
     var path = arguments[0].split('/');
-    require(`./${path[0]}`).prompt[path[1]](formatter, ...Array.prototype.slice.call(arguments, 1))
+    return require(`./${path[0]}`).prompt[path[1]](formatter, ...Array.prototype.slice.call(arguments, 1))
 };

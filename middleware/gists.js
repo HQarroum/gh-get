@@ -43,7 +43,7 @@ var displayGist = (input, out, next) => {
         }).catch(next);
     } else {
         gist.list(input)
-          .then((response) => out.prompt('gists/gist', response))
+          .then((response) => out.prompt('gists/gist', input, response))
           .then(() => gist.get(input))
           .then((response) => {
             display(response.body, out);
