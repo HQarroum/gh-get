@@ -1,17 +1,7 @@
 'use strict';
 
+let _        = require('lodash');
 let inquirer = require('inquirer');
-
-/**
- * A map between the type of search the user
- * would like to perform and the internal
- * representation of this type.
- */
-const map = {
-    'Repositories': 'repositories',
-    'Users': 'users',
-    'Code': 'code'
-};
 
 /**
  * Prompts the user for the type of search he
@@ -30,7 +20,7 @@ var type = (input) => new Promise((resolve) => {
                 'Code'
             ]
         }], (answers) => {
-            input.set('answers:identifier', map[answers.name]);
+            input.set('answers:identifier', answers.name.toLowerCase());
             resolve(input);
         });
     }
@@ -55,6 +45,21 @@ var token = (input) => new Promise((resolve) => {
     resolve();
 });
 
+/**
+ * Prompts the user for a username.
+ * @param list the list of users to display
+ */
+var users = (list) => new Promise((resolve) => {
+  return inquirer.prompt([{
+      message: 'Which user are you interested in ?',
+      type: 'list',
+      name: 'user',
+      choices: _.pluck(list, 'login')
+  }], (answers) => {
+      resolve(answers.user);
+  });
+});
+
 module.exports = {
-    prompt: { type, token }
+    prompt: { type, token, users }
 };

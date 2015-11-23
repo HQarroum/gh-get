@@ -72,4 +72,10 @@ formatter.render = function () {
     require(`./${path[0]}`).render[path[1]](formatter, ...Array.prototype.slice.call(arguments, 1));
 };
 
-formatter.prompt = (name) => require(`./${name}`).prompt;
+/**
+ * Prompts the user for an action.
+ */
+formatter.prompt = function () {
+    var path = arguments[0].split('/');
+    require(`./${path[0]}`).prompt[path[1]](formatter, ...Array.prototype.slice.call(arguments, 1))
+};

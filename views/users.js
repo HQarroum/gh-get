@@ -1,5 +1,6 @@
 'use strict';
 
+var inquirer     = require('inquirer');
 var ImageToAscii = require('image-to-ascii');
 
 /**
@@ -45,13 +46,29 @@ var displayInfo = (user, formatter) => {
  * @param user the user object
  * @param out the output
  */
-var displayProfile = (user, out) => {
-    out.log();
+var displayProfile = (user, formatter) => {
+    formatter.log();
     getImage(user).then((image) => {
-        out.log(image);
-        displayInfo(user, out);
-    }).catch(() => displayInfo(user, out));
+        formatter.log(image);
+        displayInfo(user, formatter);
+    }).catch(() => displayInfo(user, formatter));
 };
+
+/**
+ * Prompts thje user for the username he is
+ * interested in.
+ */
+var name = (input) => new Promise((resolve) => {
+    const name = input.get('answers:identifier');
+
+    if (name) return resolve(name);
+    inquirer.prompt([{
+      message: 'Which username are you interested in ?',
+      name: 'username'
+    }], (answers) => {
+      resolve(answers.username);
+    });
+});
 
 /**
  * Displays the information associated with a
@@ -61,5 +78,6 @@ var displayProfile = (user, out) => {
 var profile = (formatter, user) => displayProfile(user, formatter);
 
 module.exports = {
-    render: { profile }
+    render: { profile },
+    prompt: { name }
 };

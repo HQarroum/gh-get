@@ -18,7 +18,7 @@ var startSearch = (input, output, next) => {
     if (type) {
         return output.prompt('search').token(input)
           .then(() => search[type](input))
-          .then((r) => display(output, r));
+          .then(output.prompt('search').users);
     }
     return next(new Error(`Unknown search type: ${type}`));
 };
