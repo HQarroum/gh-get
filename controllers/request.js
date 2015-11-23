@@ -13,4 +13,4 @@ request.getParams = (input) => {
     );
 };
 
-request.send = (path, input) => got(`${path}?${request.getParams(input)}`, input.headers);
+request.send = (path, input) => got(`${path}?${request.getParams(input)}`, input.get('headers'));
