@@ -11,7 +11,7 @@ var resolveParams = (input) => {
     const argument = input.stores.argv.store._ && input.stores.argv.store._[0];
 
     if (argument) {
-        const groups = /([a-z]+)(:([a-z]+)(\/(.*))?)?/.exec(argument);
+        const groups = /([a-zA-Z]+)(:([a-zA-Z]+)(\/(.*))?)?/.exec(argument);
 
         return _.omit({
             action: groups[1],
