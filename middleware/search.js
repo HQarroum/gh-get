@@ -2,9 +2,20 @@
 
 let _        = require('lodash');
 let search   = require('../controllers/search');
+let profile  = require('../controllers/profile');
 
-var display = (out, r) => {
-    console.log(r.body.items);
+var handler = {
+    'users': function (r, input, output) {
+        return output.prompt('search/users', r.body.items)
+            .then((name) => profile.get(name, input))
+            .then((o) => output.render('users/profile', o.body));
+    },
+    'repositories': function (response) {
+
+    },
+    'code': function (response) {
+
+    }
 };
 
 /**
@@ -17,8 +28,8 @@ var startSearch = (input, output, next) => {
 
     if (type) {
         return output.prompt('search/token', input)
-          .then(() => search[type](input))
-          .then(output.prompt('search/users'));
+            .then(() => search[type](input))
+            .then((r) => handler[type](r, input, output));
     }
     return next(new Error(`Unknown search type: ${type}`));
 };

@@ -58,15 +58,16 @@ var displayProfile = (user, formatter) => {
  * Prompts thje user for the username he is
  * interested in.
  */
-var name = (input) => new Promise((resolve) => {
+var name = (formatter, input) => new Promise((resolve) => {
     const name = input.get('answers:identifier');
 
     if (name) return resolve(name);
     inquirer.prompt([{
       message: 'Which username are you interested in ?',
-      name: 'username'
+      name: 'name'
     }], (answers) => {
-      resolve(answers.username);
+        input.set('answers:identifier', answers.name);
+        resolve(answers.name);
     });
 });
 

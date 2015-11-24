@@ -39,7 +39,7 @@ var token = (formatter, input) => new Promise((resolve) => {
             name: 'path'
         }], (answers) => {
             input.set('answers:path', answers.path);
-            resolve(input);
+            resolve();
         });
     }
     resolve();
