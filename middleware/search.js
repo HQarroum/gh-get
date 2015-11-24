@@ -1,21 +1,31 @@
 'use strict';
 
-let _        = require('lodash');
-let search   = require('../controllers/search');
-let profile  = require('../controllers/profile');
+const _        = require('lodash');
+const search   = require('../controllers/search');
+const profile  = require('../controllers/profile');
+const handler  = {};
 
-var handler = {
-    'users': function (r, input, output) {
-        return output.prompt('search/users', r.body.items)
-            .then((name) => profile.get(name, input))
-            .then((o) => output.render('users/profile', o.body));
-    },
-    'repositories': function (response) {
+/**
+ * Handles the response to a search against a user.
+ */
+handler.users = (r, input, out) => {
+    return out.prompt('search/users', r.body.items)
+        .then((name) => profile.get(name, input))
+        .then((o) => out.render('users/profile', o.body));
+};
 
-    },
-    'code': function (response) {
+/**
+ * Handles the response to a search against a repository.
+ */
+handler.repositories = (r, input, out) => {
 
-    }
+};
+
+/**
+ * Handles the response to a search against code.
+ */
+handler.code = (r, input, out) => {
+
 };
 
 /**
