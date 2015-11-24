@@ -16,7 +16,8 @@ var displayRepositories = (input, out) => {
     const path = input.get('answers:path');
 
     if (path) {
-        return repos.get(input).then((response) => display(response.body, out));
+        return repos.get(input)
+	    .then((response) => display(response.body, out));
     }
     return repos.list(input).then((response) => {
         response.body.forEach((repository) => (out.log(), display(repository, out)));

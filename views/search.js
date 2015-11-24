@@ -8,7 +8,7 @@ let inquirer = require('inquirer');
  * would like to perform.
  * @param input the chain input
  */
-var type = (input) => new Promise((resolve) => {
+var type = (formatter, input) => new Promise((resolve) => {
     if (!input.get('answers:identifier')) {
         return inquirer.prompt([{
             message: 'What are you searching for ?',
@@ -32,7 +32,7 @@ var type = (input) => new Promise((resolve) => {
  * to search.
  * @param input the chain input
  */
-var token = (input) => new Promise((resolve) => {
+var token = (formatter, input) => new Promise((resolve) => {
     if (!input.get('answers:path')) {
         return inquirer.prompt([{
             message: 'Enter a search token',
@@ -49,7 +49,7 @@ var token = (input) => new Promise((resolve) => {
  * Prompts the user for a username.
  * @param list the list of users to display
  */
-var users = (list) => new Promise((resolve) => {
+var users = (formatter, list) => new Promise((resolve) => {
   return inquirer.prompt([{
       message: 'Which user are you interested in ?',
       type: 'list',
