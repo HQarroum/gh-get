@@ -44,7 +44,9 @@ $ choco install graphicsmagick
 
 ## Usage
 
-The `gh-get` command-line tool allows you to perform several actions given the options you are providing. You can pass options using the command-line interface, or using the interactive mode which is triggered when no arguments are given to `gh-get`.
+The `gh-get` command-line tool allows you to perform several actions given the options you are providing. You can pass different options using the command-line interface, or using the interactive mode which is triggered when no arguments are given to `gh-get`.
+
+Note that these interfaces are not mutually exclusive. By default, we use the command-line options with a higher precedence, but if your options are lacking an information we need to perform your request, the interactive interface will kick in and prompt you for the missing pieces of information.
 
 ### Command line interface
 
