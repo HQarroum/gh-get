@@ -41,7 +41,7 @@ var token = (formatter, input) => new Promise((resolve) => {
             name: 'path'
         }], (answers) => {
             input.set('answers:path', answers.path);
-            resolve();
+            resolve(answers.path);
         });
     }
     resolve();
@@ -58,9 +58,7 @@ var code = (formatter, results) => new Promise((resolve) => {
         name: 'file',
         type: 'list',
         choices: _.pluck(results, 'name')
-    }], (answers) => {
-        resolve(_.find(results, (result) => result.name === answers.file));
-    });
+    }], (answers) => resolve(_.find(results, { name: answers.file })));
 });
 
 /**
@@ -74,9 +72,7 @@ var repositories = (formatter, repos) => new Promise((resolve) => {
         name: 'repo',
         type: 'list',
         choices: _.pluck(repos, 'name')
-    }], (answers) => {
-        resolve(_.find(repos, (repo) => repo.name === answers.repo));
-    });
+    }], (answers) => resolve(_.find(repos, { name: answers.repo })));
 });
 
 /**
@@ -90,9 +86,7 @@ var users = (formatter, list) => new Promise((resolve) => {
       type: 'list',
       name: 'user',
       choices: _.pluck(list, 'login')
-  }], (answers) => {
-      resolve(answers.user);
-  });
+  }], (answers) => resolve(answers.user));
 });
 
 /**
