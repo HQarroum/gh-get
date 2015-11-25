@@ -75,9 +75,7 @@ var promptFiles = (formatter, files) => new Promise((resolve) => {
         type: 'checkbox',
         name: 'name',
         choices: _.keys(files)
-    }], (answers) => {
-        resolve(_.pick(files, answers.name));
-    });
+    }], (answers) => resolve(_.pick(files, answers.name)));
 });
 
 /**
