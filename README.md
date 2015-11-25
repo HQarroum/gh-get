@@ -39,7 +39,9 @@ $ choco install graphicsmagick
  * Interactive command-line assistant
  * User profile page generation
  * Information and statistics about followers
- * Query for user Gists and repositories
+ * Navigate user gists and repositories
+ * Code syntax highlighting in the shell
+ * Renders image files in ASCII
  * Search Github interactively through the command line
 
 ## Usage
