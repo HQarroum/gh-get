@@ -34,9 +34,7 @@ var renderFile = (formatter, file) => {
  * @param files the file list to display
  * the content from
  */
-var renderFiles = (formatter, files) => {
-    _.each(files, (file) => renderFile(formatter, file));
-};
+var renderFiles = (formatter, files) => _.each(files, (file) => renderFile(formatter, file));
 
 /**
  * Prompts the user to choose between the different Gists available.
