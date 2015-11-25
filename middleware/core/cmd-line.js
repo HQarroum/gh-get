@@ -1,6 +1,7 @@
 'use strict';
 
-var _ = require('lodash');
+const _      = require('lodash');
+const regexp = /([a-zA-Z]+)(:([a-zA-Z]+)(\/(.*))?)?/;
 
 /**
  * Parses the given input and extracts the provided parameters.
@@ -11,7 +12,7 @@ var resolveParams = (input) => {
     const argument = input.stores.argv.store._ && input.stores.argv.store._[0];
 
     if (argument) {
-        const groups = /([a-zA-Z]+)(:([a-zA-Z]+)(\/(.*))?)?/.exec(argument);
+        const groups = regexp.exec(argument);
 
         return _.omit({
             action: groups[1],

@@ -26,9 +26,9 @@ var map = {
 /**
  * Displays the octocat logo.
  */
-var octocat = () => {
+var octocat = (output) => {
     var name = path.join(__dirname, '..', '..', 'assets', 'octocat.txt');
-    console.log(chalk.yellow(
+    output.log(chalk.yellow(
       fs.readFileSync(name, 'utf8')
     ));
 };
@@ -37,11 +37,11 @@ var octocat = () => {
  * Prompts the user to choose an action.
  * @returns {Promise} a promise to the user action.
  */
-var promptAction = (input) => new Promise((resolve) => {
+var promptAction = (input, output) => new Promise((resolve) => {
     const action = input.get('answers:action');
 
     if (action) return resolve(input.get('answers'));
-    octocat();
+    octocat(output);
     inquirer.prompt([{
         message: 'What would you like to do ?',
         type: 'list',
@@ -58,8 +58,7 @@ var promptAction = (input) => new Promise((resolve) => {
             'Quit'
         ]
     }], (answers) => {
-        answers.action = map[answers.action];
-        resolve(answers);
+        resolve(map[answers.action]);
     });
 });
 
@@ -71,8 +70,8 @@ var promptAction = (input) => new Promise((resolve) => {
  * @param next a callback to call the next middleware
  */
 module.exports = (input, output, next) => {
-    promptAction(input).then((answers) => {
-        input.set('answers', answers);
+    promptAction(input, output).then((action) => {
+        input.set('answers:action', action);
         next();
     }).catch(next);
 };
