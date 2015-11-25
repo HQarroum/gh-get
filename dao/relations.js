@@ -1,8 +1,8 @@
 'use strict';
 
-let _        = require('lodash');
-let request  = require('./request');
-let relation = module.exports;
+const _        = require('lodash');
+const request  = require('./request');
+let relation   = module.exports;
 
 /**
  * Namespaces identifying the kind of relations.

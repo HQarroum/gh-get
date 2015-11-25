@@ -10,6 +10,7 @@ const gists   = module.exports;
 gists.list = (user, input) => request.send(`users/${user}/gists`, input);
 
 /**
- * @return a promise to a Gist object.
+ * @return a promise to a Gist object associated
+ * with the given `id`.
  */
 gists.get = (id, input) => request.send(`gists/${id}`, input);

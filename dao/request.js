@@ -4,6 +4,11 @@ const _       = require('lodash');
 const got     = require('gh-got');
 let request   = module.exports;
 
+/**
+ * @returns an object holding the key/values to
+ * be used as query parameters
+ * @param input the configuration store
+ */
 request.getParams = (input) => {
     let params = input.params || {};
 
@@ -13,6 +18,11 @@ request.getParams = (input) => {
     );
 };
 
+/**
+ * Sends an HTTP request.
+ * @param path the path of the URL to query
+ * @param input the configuration store
+ */
 request.send = (path, input) => got(`${path}?${request.getParams(input)}`, {
   headers: input.get('headers')
 });

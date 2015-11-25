@@ -7,8 +7,8 @@ let search  = module.exports;
 
 /**
  * Internal function building search requests.
- * @param prefix
- * @param input
+ * @param prefix the search prefix
+ * @param input the configuration store
  * @returns a promise to the searched element
  */
 search.prefix = (prefix, input) => {

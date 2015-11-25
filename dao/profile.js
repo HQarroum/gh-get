@@ -1,10 +1,12 @@
 'use strict';
 
-let request = require('./request');
-let profile = module.exports;
+const request = require('./request');
+let profile   = module.exports;
 
 /**
- * @return the user object associated with the
+ * @return a promise to the user object associated with the
  * given user login.
+ * @param login the user login
+ * @param input the configuration store
  */
-profile.get = (name, input) => request.send(`users/${name}`, input);
+profile.get = (login, input) => request.send(`users/${login}`, input);
