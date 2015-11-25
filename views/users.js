@@ -27,7 +27,7 @@ var getImage = (user) => new Promise((resolve, reject) => {
  * @param user the user object
  * @param formatter the output
  */
-var displayInfo = (user, formatter) => {
+var info = (user, formatter) => {
     formatter.log(`\t ${formatter.chalk.bold(user.public_repos)} repositories
         \r\t ${formatter.chalk.bold(user.followers)} followers
         \r\t ${formatter.chalk.bold(user.following)} following \n
@@ -41,17 +41,16 @@ var displayInfo = (user, formatter) => {
 };
 
 /**
- * Displays the user profile information on
- * the standard output.
- * @param user the user object
+ * Displays the information associated with a
+ * user profile.
  * @param formatter the output formatter
+ * @param user the user object
  */
-var displayProfile = (user, formatter) => {
-    formatter.log();
+var profile = (formatter, user) => {
     getImage(user).then((image) => {
         formatter.log(image);
-        displayInfo(user, formatter);
-    }).catch(() => displayInfo(user, formatter));
+        info(user, formatter);
+    }).catch(() => info(user, formatter));
 };
 
 /**
@@ -72,14 +71,6 @@ var name = (formatter, input) => new Promise((resolve) => {
         resolve(answers.name);
     });
 });
-
-/**
- * Displays the information associated with a
- * user profile.
- * @param formatter the output formatter
- * @param user the user object
- */
-var profile = (formatter, user) => displayProfile(user, formatter);
 
 /**
  * The view interface exposed by this module.
