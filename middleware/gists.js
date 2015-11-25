@@ -1,6 +1,6 @@
 'use strict';
 
-var gist = require('../controllers/gists');
+var gist = require('../dao/gists');
 
 /**
  * Displays information about a Gist.

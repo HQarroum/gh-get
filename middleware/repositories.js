@@ -1,6 +1,6 @@
 'use strict';
 
-var repos = require('../controllers/repositories');
+var repos = require('../dao/repositories');
 
 /**
  * Displays information about a repository.

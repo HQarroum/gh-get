@@ -1,8 +1,8 @@
 'use strict';
 
 const _        = require('lodash');
-const search   = require('../controllers/search');
-const profile  = require('../controllers/profile');
+const search   = require('../dao/search');
+const profile  = require('../dao/profile');
 const handler  = {};
 
 /**
@@ -25,7 +25,9 @@ handler.repositories = (r, input, out) => {
  * Handles the response to a search against code.
  */
 handler.code = (r, input, out) => {
-
+    return out.prompt('search/code', r.body.items)
+        .then((name) => profile.get(name, input))
+        .then((o) => out.render('users/profile', o.body));
 };
 
 /**

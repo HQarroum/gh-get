@@ -1,6 +1,6 @@
 'use strict';
 
-var profile = require('../controllers/profile');
+var profile = require('../dao/profile');
 
 /**
  * Displays the user profile information.

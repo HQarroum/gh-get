@@ -1,6 +1,6 @@
 'use strict';
 
-var relations = require('../controllers/relations');
+var relations = require('../dao/relations');
 
 /**
  * Displays information about a given follower.
