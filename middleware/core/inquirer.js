@@ -37,11 +37,7 @@ var octocat = (output) => {
  * Prompts the user to choose an action.
  * @returns {Promise} a promise to the user action.
  */
-var promptAction = (input, output) => new Promise((resolve) => {
-    const action = input.get('answers:action');
-
-    if (action) return resolve(input.get('answers'));
-    octocat(output);
+var promptAction = (input) => new Promise((resolve) => {
     inquirer.prompt([{
         message: 'What would you like to do ?',
         type: 'list',
@@ -57,9 +53,7 @@ var promptAction = (input, output) => new Promise((resolve) => {
             'Search for repositories, users or code',
             'Quit'
         ]
-    }], (answers) => {
-        resolve(map[answers.action]);
-    });
+    }], (answers) => resolve(map[answers.action]));
 });
 
 /**
@@ -70,8 +64,14 @@ var promptAction = (input, output) => new Promise((resolve) => {
  * @param next a callback to call the next middleware
  */
 module.exports = (input, output, next) => {
-    promptAction(input, output).then((action) => {
-        input.set('answers:action', action);
-        next();
-    });
+    const action = input.get('answers:action');
+
+    if (!action) {
+        octocat(output);
+        return promptAction(input).then((action) => {
+            input.set('answers:action', action);
+            next();
+        });
+    }
+    next();
 };
