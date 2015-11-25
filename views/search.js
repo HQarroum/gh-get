@@ -1,12 +1,13 @@
 'use strict';
 
-let _        = require('lodash');
-let inquirer = require('inquirer');
+const _        = require('lodash');
+const inquirer = require('inquirer');
 
 /**
  * Prompts the user for the type of search he
  * would like to perform.
- * @param input the chain input
+ * @param formatter the output formatter
+ * @param input the configuration store
  */
 var type = (formatter, input) => new Promise((resolve) => {
     if (!input.get('answers:identifier')) {
@@ -30,7 +31,8 @@ var type = (formatter, input) => new Promise((resolve) => {
 /**
  * Prompts the user for the token we would like
  * to search.
- * @param input the chain input
+ * @param formatter the output formatter
+ * @param input the configuration store
  */
 var token = (formatter, input) => new Promise((resolve) => {
     if (!input.get('answers:path')) {
@@ -47,6 +49,8 @@ var token = (formatter, input) => new Promise((resolve) => {
 
 /**
  * Prompts the user for the file he is interested in.
+ * @param formatter the output formatter
+ * @param results the code search result
  */
 var code = (formatter, results) => new Promise((resolve) => {
     inquirer.prompt([{
@@ -61,6 +65,8 @@ var code = (formatter, results) => new Promise((resolve) => {
 
 /**
  * Prompts the user for the repository he is interested in.
+ * @param formatter the output formatter
+ * @param repos the repository list
  */
 var repositories = (formatter, repos) => new Promise((resolve) => {
     inquirer.prompt([{
@@ -75,6 +81,7 @@ var repositories = (formatter, repos) => new Promise((resolve) => {
 
 /**
  * Prompts the user for a username.
+ * @param formatter the output formatter
  * @param list the list of users to display
  */
 var users = (formatter, list) => new Promise((resolve) => {
@@ -88,6 +95,9 @@ var users = (formatter, list) => new Promise((resolve) => {
   });
 });
 
+/**
+ * The view interface exposed by this module.
+ */
 module.exports = {
     prompt: { type, token, users, code, repositories }
 };

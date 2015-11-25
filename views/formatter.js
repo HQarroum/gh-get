@@ -1,8 +1,8 @@
 'use strict';
 
-let chalk     = require('chalk');
-let titleize  = require('titleize');
-let formatter = module.exports = console;
+const chalk     = require('chalk');
+const titleize  = require('titleize');
+let formatter   = module.exports = console;
 
 formatter.chalk = chalk;
 

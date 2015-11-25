@@ -6,7 +6,7 @@ var ImageToAscii = require('image-to-ascii');
 /**
  * Returns a promise to the ASCII version of the user avatar.
  * @param user the user object
- * @return a promise
+ * @return a promise to the user profile image
  */
 var getImage = (user) => new Promise((resolve, reject) => {
     ImageToAscii({
@@ -57,6 +57,8 @@ var displayProfile = (user, formatter) => {
 /**
  * Prompts the user for the username he is
  * interested in.
+ * @param formatter the output formatter
+ * @param input the configuration store
  */
 var name = (formatter, input) => new Promise((resolve) => {
     const name = input.get('answers:identifier');
@@ -74,10 +76,14 @@ var name = (formatter, input) => new Promise((resolve) => {
 /**
  * Displays the information associated with a
  * user profile.
- * @returns the formatted user profile information
+ * @param formatter the output formatter
+ * @param user the user object
  */
 var profile = (formatter, user) => displayProfile(user, formatter);
 
+/**
+ * The view interface exposed by this module.
+ */
 module.exports = {
     render: { profile },
     prompt: { name }

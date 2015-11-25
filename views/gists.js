@@ -8,6 +8,8 @@ var sanitize = (gist) => (gist ? new String(gist.description).trim().replace(/\r
 /**
  * Displays the information associated with a
  * Gist.
+ * @param formatter the output formatter
+ * @param gist the gist object
  */
 var information = (formatter, gist) => {
     formatter.log(`${formatter.title(`Gist ${gist.id} (${_.keys(gist.files).length} files(s)`)})
@@ -38,9 +40,10 @@ var renderFiles = (formatter, files) => _.each(files, (file) => renderFile(forma
 
 /**
  * Prompts the user to choose between the different Gists available.
- * @param gists the list of public Gists owned
- * by the current user.
  * @param formatter the output formatter
+ * @param input the configuration store
+ * @param gists the list of public gists owned
+ * by the current user.
  * @returns {Promise} a promise to the chosen Gist.
  */
 var list = (formatter, input, gists) => new Promise((resolve) => {
@@ -77,6 +80,9 @@ var promptFiles = (formatter, files) => new Promise((resolve) => {
     });
 });
 
+/**
+ * The view interface exposed by this module.
+ */
 module.exports = {
     prompt: { list, files: promptFiles },
     render: { information, files: renderFiles }

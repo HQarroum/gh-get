@@ -5,7 +5,8 @@ var _ = require('lodash');
 /**
  * Displays the information associated with a
  * follower.
- * @returns the formatted follower information
+ * @param formatter the output formatter
+ * @param follower the follower to display
  */
 var follower = (formatter, follower) => {
     formatter.log(_.isObject(follower) ?
@@ -14,6 +15,9 @@ var follower = (formatter, follower) => {
     );
 };
 
+/**
+ * The view interface exposed by this module.
+ */
 module.exports = {
     render: { follower }
 };

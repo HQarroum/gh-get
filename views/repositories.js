@@ -7,7 +7,6 @@ const inquirer = require('inquirer');
 /**
  * Displays the information associated with a
  * repository.
- * @returns the formatted repository information
  */
 var information = (formatter, repository) => {
     formatter.log(`\r${formatter.title(repository.name)},
@@ -25,6 +24,9 @@ var file = (formatter, file) => formatter.log(cardinal.highlight(file));
 
 /**
  * Prompts the user to choose a repository.
+ * @param formatter the output formatter
+ * @param input the configuration store
+ * @param repos the repository list
  */
 var list = (formatter, input, repos) => new Promise((resolve) => {
     const path = input.get('answers:path');
@@ -43,6 +45,9 @@ var list = (formatter, input, repos) => new Promise((resolve) => {
 
 /**
  * Prompts the user to choose a repository content.
+ * @param formatter the output formatter
+ * @param input the configuration store
+ * @param files the content object list
  */
 var contents = (formatter, input, files) => new Promise((resolve) => {
     const file = input.get('answers:file');
@@ -60,6 +65,9 @@ var contents = (formatter, input, files) => new Promise((resolve) => {
     });
 });
 
+/**
+ * The view interface exposed by this module.
+ */
 module.exports = {
     prompt: { list, contents },
     render: { information, file }
