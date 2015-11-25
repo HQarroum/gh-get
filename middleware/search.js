@@ -18,31 +18,40 @@ const displayFile = (response, out) => out.render('repositories/file', response.
 
 /**
  * Handles the response to a search against a user.
+ * @param res the search request response
+ * @param input the configuration store
+ * @param out the output formatter
  */
-handler.users = (r, input, out) => {
-    return out.prompt('search/users', r.body.items)
+handler.users = (res, input, out) => {
+    return out.prompt('search/users', res.body.items)
         .then((name) => profile.get(name, input))
         .then((o) => out.render('users/profile', o.body));
 };
 
 /**
  * Handles the response to a search against a repository.
+ * @param res the search request response
+ * @param input the configuration store
+ * @param out the output formatter
  */
-handler.repositories = (r, input, out) => {
-    return out.prompt('search/repositories', r.body.items)
+handler.repositories = (res, input, out) => {
+    return out.prompt('search/repositories', res.body.items)
       .then((r) => repos.get(r.owner.login, r.name, input))
       .then((r) => displayRepository(r.body, out))
       .then((r) => repos.contents(r.body.owner.login, r.body.name, input))
-      .then((response) => out.prompt('repositories/contents', input, response.body))
+      .then((r) => out.prompt('repositories/contents', input, r.body))
       .then((content) => repos.file(content, input))
       .then((response) => displayFile(response, out));
 };
 
 /**
  * Handles the response to a search against code.
+ * @param res the search request response
+ * @param input the configuration store
+ * @param out the output formatter
  */
-handler.code = (r, input, out) => {
-    return out.prompt('search/code', r.body.items)
+handler.code = (res, input, out) => {
+    return out.prompt('search/code', res.body.items)
         .then((result) => search.resolveFile(result, input))
         .then((result) => repos.file(result, input))
         .then((response) => displayFile(response, out));
@@ -50,8 +59,9 @@ handler.code = (r, input, out) => {
 
 /**
  * Dispatches the search type to
- * @param input
- * @param output
+ * @param input the configuration store
+ * @param output the output formatter
+ * @param next the callback to the next middleware
  */
 var startSearch = (input, output, next) => {
     const type = input.get('answers:identifier');
