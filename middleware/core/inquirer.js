@@ -1,10 +1,10 @@
 'use strict';
 
+var _        = require('lodash');
 var inquirer = require('inquirer');
 var chalk    = require('chalk');
 var path     = require('path');
 var fs       = require('fs');
-var _        = require('lodash');
 
 /**
  * A map between the inquirer display strings and their equivalent
@@ -24,15 +24,6 @@ var map = {
 };
 
 /**
- * A predicate function used as a string validator for
- * inquirer.
- * @param message the message to display on a validation
- * failure.
- * @returns {Function} a validator.
- */
-var validator = (message) => (value) => (value && value.length > 0) || message;
-
-/**
  * Displays the octocat logo.
  */
 var octocat = () => {
@@ -41,19 +32,6 @@ var octocat = () => {
       fs.readFileSync(name, 'utf8')
     ));
 };
-
-/**
- * Prompts the user to enter the username he is
- * interested in.
- * @returns {Promise} a promise to the given username.
- */
-var promptUsername = () => new Promise((resolve) => {
-    inquirer.prompt([{
-        message: 'Which user are you interested in ? (e.g HQarroum)',
-        name: 'username',
-        validate: validator('Please enter a user name')
-    }], resolve);
-});
 
 /**
  * Prompts the user to choose an action.
