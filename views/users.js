@@ -44,7 +44,7 @@ var displayInfo = (user, formatter) => {
  * Displays the user profile information on
  * the standard output.
  * @param user the user object
- * @param out the output
+ * @param formatter the output formatter
  */
 var displayProfile = (user, formatter) => {
     formatter.log();
@@ -55,7 +55,7 @@ var displayProfile = (user, formatter) => {
 };
 
 /**
- * Prompts thje user for the username he is
+ * Prompts the user for the username he is
  * interested in.
  */
 var name = (formatter, input) => new Promise((resolve) => {

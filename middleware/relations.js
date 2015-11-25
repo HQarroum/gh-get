@@ -60,7 +60,7 @@ var displayUnfollowers = (input, out) => {
 };
 
 /**
- * The `followers` middleware entry point.
+ * The `relations` middleware entry point.
  * @param input the input data store.
  * @param output the middleware output
  * @param next the callback to the next middleware

@@ -74,6 +74,12 @@ var startSearch = (input, output, next) => {
     return next(new Error(`Unknown search type: ${type}`));
 };
 
+/**
+ * The `search` middleware entry point.
+ * @param input the input data store.
+ * @param output the middleware output
+ * @param next the callback to the next middleware
+ */
 module.exports = (input, output, next) => {
     const action = input.get('answers:action');
 
