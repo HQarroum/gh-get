@@ -1,9 +1,20 @@
 'use strict';
 
 const _        = require('lodash');
+const repos    = require('../dao/repositories');
 const search   = require('../dao/search');
 const profile  = require('../dao/profile');
 const handler  = {};
+
+/**
+ * Displays information about a repository.
+ */
+const displayRepository = (repository, out) => out.render('repositories/information', repository);
+
+/**
+ * Displays the content of a file.
+ */
+const displayFile = (response, out) => out.render('repositories/file', response.body);
 
 /**
  * Handles the response to a search against a user.
@@ -18,7 +29,15 @@ handler.users = (r, input, out) => {
  * Handles the response to a search against a repository.
  */
 handler.repositories = (r, input, out) => {
-
+    return out.prompt('search/repositories', r.body.items)
+      .then((r) => repos.get(r.owner.login, r.name, input))
+      .then((r) => {
+          displayRepository(r.body, out);
+          return repos.contents(r.body.owner.login, r.body.name, input);
+      })
+      .then((response) => out.prompt('repositories/contents', input, response.body))
+      .then((content) => repos.file(content, input))
+      .then((response) => displayFile(response, out));
 };
 
 /**
@@ -26,8 +45,9 @@ handler.repositories = (r, input, out) => {
  */
 handler.code = (r, input, out) => {
     return out.prompt('search/code', r.body.items)
-        .then((name) => profile.get(name, input))
-        .then((o) => out.render('users/profile', o.body));
+        .then((result) => search.resolveFile(result, input))
+        .then((result) => repos.file(result, input))
+        .then((response) => displayFile(response, out));
 };
 
 /**

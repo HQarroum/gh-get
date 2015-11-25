@@ -1,13 +1,13 @@
 'use strict';
 
-let _        = require('lodash');
-let chalk    = require('chalk');
-let inquirer = require('inquirer');
+const _        = require('lodash');
+const inquirer = require('inquirer');
+
+var sanitize = (gist) => (gist ? new String(gist.description).trim().replace(/\r?\n/g, ' ') : '(Empty description)');
 
 /**
  * Displays the information associated with a
  * Gist.
- * @returns the formatted Gist information
  */
 var information = (formatter, gist) => {
     formatter.log(`${formatter.title(`Gist ${gist.id} (${_.keys(gist.files).length} files(s)`)})
@@ -16,12 +16,33 @@ var information = (formatter, gist) => {
     `);
 };
 
-var sanitize = (gist) => (gist ? new String(gist.description).trim().replace(/\r?\n/g, ' ') : '(Empty description)');
+/**
+ * Displays the content of a file.
+ * @param formatter the output formatter
+ * @param file the file to display the
+ * content from
+ */
+var renderFile = (formatter, file) => {
+    formatter.log(`
+        \r${formatter.title(`${file.filename} (${file.language||'Unknown language'})`)}\n
+        \r${file.content}`);
+};
+
+/**
+ * Displays the content of a file list.
+ * @param formatter the output formatter
+ * @param files the file list to display
+ * the content from
+ */
+var renderFiles = (formatter, files) => {
+    _.each(files, (file) => renderFile(formatter, file));
+};
 
 /**
  * Prompts the user to choose between the different Gists available.
  * @param gists the list of public Gists owned
  * by the current user.
+ * @param formatter the output formatter
  * @returns {Promise} a promise to the chosen Gist.
  */
 var list = (formatter, input, gists) => new Promise((resolve) => {
@@ -34,36 +55,31 @@ var list = (formatter, input, gists) => new Promise((resolve) => {
         name: 'path',
         choices: _.map(gists, sanitize)
     }], (answers) => {
-        resolve(input.set('answers:path', _.findWhere(gists, { description: answers.path }).id));
+        const gist = _.findWhere(gists, { description: answers.path });
+        input.set('answers:path', gist);
+        resolve(gist);
     });
 });
 
 /**
  * Prompts the user to choose between the different files available
  * in the selected Gist.
+ * @param formatter the output formatter
  * @param files the list of files part of the Gist.
  * @returns {Promise} a promise to the chosen file.
  */
-var files = (formatter, files) => new Promise((resolve) => {
-    inquirer.prompt([
-        {
-            message: 'Which file are you interested in ?',
-            type: 'checkbox',
-            name: 'name',
-            choices: _.keys(files)
-        }
-    ], (answers) => {
-        _.each(answers.name, (name) => {
-            formatter.log();
-            formatter.log(chalk.bold(chalk.blue('* '), chalk.magenta(name)), '\n');
-            formatter.log(files[name].content);
-            formatter.log();
-        });
-        resolve();
+var promptFiles = (formatter, files) => new Promise((resolve) => {
+    inquirer.prompt([{
+        message: 'Which file are you interested in ?',
+        type: 'checkbox',
+        name: 'name',
+        choices: _.keys(files)
+    }], (answers) => {
+        resolve(_.pick(files, answers.name));
     });
 });
 
 module.exports = {
-    prompt: { list, files },
-    render: { information }
+    prompt: { list, files: promptFiles },
+    render: { information, files: renderFiles }
 };

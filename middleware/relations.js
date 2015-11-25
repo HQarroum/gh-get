@@ -11,47 +11,53 @@ var display = (follower, out) => out.render('relations/follower', follower);
  * Displays up to 100 users followed by the given user.
  * @param input the chain input
  * @param out the output
- * @param next the next middleware trigger
  */
-var displayFollowings = (input, out, next) => relations.following.list(input)
-  .then((response) => {
-    if (response.body.length > 0) {
-        response.body.forEach((user) => display(user, out));
-    } else {
-        out.log('The given user is not following anyone');
-    }
-}).catch(next);
+var displayFollowings = (input, out) => {
+    return out.prompt('users/name', input)
+        .then((name) => relations.following.list(name, input))
+        .then((response) => {
+          if (response.body.length > 0) {
+              response.body.forEach((user) => display(user, out));
+          } else {
+              out.log('The given user is not following anyone');
+          }
+      });
+};
 
 /**
  * Displays up to 100 users following the given user.
  * @param input the chain input
  * @param out the output
- * @param next the next middleware trigger
  */
-var displayFollowers = (input, out, next) => relations.followers.list(input)
-  .then((response) => {
-    if (response.body.length > 0) {
-        response.body.forEach((user) => display(user, out));
-    } else {
-        out.log('The given user has no followers');
-    }
-}).catch(next);
+var displayFollowers = (input, out) => {
+    return out.prompt('users/name', input)
+        .then((name) => relations.followers.list(name, input))
+        .then((response) => {
+          if (response.body.length > 0) {
+              response.body.forEach((user) => display(user, out));
+          } else {
+              out.log('The given user has no followers');
+          }
+      });
+};
 
 /**
  * Displays up to 100 users followed by the given user,
  * but not following him back.
  * @param input the chain input
  * @param out the output
- * @param next the next middleware trigger
  */
-var displayUnfollowers = (input, out, next) => relations.unfollowers.list(input)
-  .then((unfollowers) => {
-    if (unfollowers.length > 0) {
-        unfollowers.forEach((user) => display(user, out));
-    } else {
-        out.log('The given user does not follow any user not following him back');
-    }
-}).catch(next);
+var displayUnfollowers = (input, out) => {
+    return out.prompt('users/name', input)
+        .then((name) => relations.unfollowers.list(name, input))
+        .then((unfollowers) => {
+          if (unfollowers.length > 0) {
+              unfollowers.forEach((user) => display(user, out));
+          } else {
+              out.log('The given user does not follow any user not following him back');
+          }
+      });
+};
 
 /**
  * The `followers` middleware entry point.
@@ -63,11 +69,11 @@ module.exports = (input, output, next) => {
     const action = input.get('answers:action');
 
     if (action === 'followings') {
-        displayFollowings(input, output, next);
+        displayFollowings(input, output).catch(next);
     } else if (action === 'followers') {
-        displayFollowers(input, output, next);
+        displayFollowers(input, output).catch(next);
     } else if (action === 'unfollowers') {
-        displayUnfollowers(input, output, next);
+        displayUnfollowers(input, output).catch(next);
     } else {
         next();
     }

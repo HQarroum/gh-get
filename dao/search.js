@@ -1,6 +1,7 @@
 'use strict';
 
 let _       = require('lodash');
+let got     = require('got');
 let request = require('./request');
 let search  = module.exports;
 
@@ -32,3 +33,10 @@ search.repositories = (input) => search.prefix('repositories', input);
  * code.
  */
 search.code = (input) => search.prefix('code', input);
+
+/**
+ * @return a promise to the resolved file object.
+ * @param result the file object issued by the search result
+ * @param input the configuration store
+ */
+search.resolveFile = (result, input) => got(result.url).then((result) => JSON.parse(result.body));

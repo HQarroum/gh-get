@@ -1,27 +1,35 @@
 'use strict';
 
-var repos = require('../dao/repositories');
+const repos = require('../dao/repositories');
 
 /**
  * Displays information about a repository.
  */
-var display = (repository, out) => out.render('repositories/information', repository);
+const displayRepository = (repository, out) => (out.render('repositories/information', repository), repository);
+
+/**
+ * Displays the content of a file.
+ */
+const displayFile = (response, out) => out.render('repositories/file', response.body);
 
 /**
  * Displays up to 100 repositories of the given user.
  * @param input the chain input
  * @param out the middleware output
  */
-var displayRepositories = (input, out) => {
-    const path = input.get('answers:path');
+const displayRepositories = (input, out) => {
+    let user = undefined;
 
-    if (path) {
-        return repos.get(input)
-	    .then((response) => display(response.body, out));
-    }
-    return repos.list(input).then((response) => {
-        response.body.forEach((repository) => (out.log(), display(repository, out)));
-    });
+    return out.prompt('users/name', input)
+        .then((name) => (user = name))
+        .then(() => repos.list(user, input))
+        .then((response) => out.prompt('repositories/list', input, response.body))
+        .then((response) => repos.get(user, response, input))
+        .then((response) => displayRepository(response.body, out))
+        .then((response) => repos.contents(user, response.body.name, input))
+        .then((response) => out.prompt('repositories/contents', input, response.body))
+        .then((content) => repos.file(content, input))
+        .then((response) => displayFile(response, out));
 };
 
 /**

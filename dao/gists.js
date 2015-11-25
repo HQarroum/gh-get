@@ -1,15 +1,15 @@
 'use strict';
 
-let request = require('./request');
-let gists   = module.exports;
+const request = require('./request');
+const gists   = module.exports;
 
 /**
- * Returns a promise to the list of public Gists associated
+ * @return a promise to the list of public Gists associated
  * with the given user.
  */
-gists.list = (input) => request.send(`users/${input.get('answers:identifier')}/gists`, input);
+gists.list = (user, input) => request.send(`users/${user}/gists`, input);
 
 /**
- * Returns a promise to a Gist object.
+ * @return a promise to a Gist object.
  */
-gists.get = (input) => request.send(`gists/${input.get('answers:path')}`, input);
+gists.get = (id, input) => request.send(`gists/${id}`, input);

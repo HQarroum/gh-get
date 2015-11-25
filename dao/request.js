@@ -1,8 +1,8 @@
 'use strict';
 
-let _       = require('lodash');
-let got     = require('gh-got');
-let request = module.exports;
+const _       = require('lodash');
+const got     = require('gh-got');
+let request   = module.exports;
 
 request.getParams = (input) => {
     let params = input.params || {};

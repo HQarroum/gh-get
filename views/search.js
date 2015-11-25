@@ -46,6 +46,34 @@ var token = (formatter, input) => new Promise((resolve) => {
 });
 
 /**
+ * Prompts the user for the file he is interested in.
+ */
+var code = (formatter, results) => new Promise((resolve) => {
+    inquirer.prompt([{
+        message: 'Enter a search token',
+        name: 'file',
+        type: 'list',
+        choices: _.pluck(results, 'name')
+    }], (answers) => {
+        resolve(_.find(results, (result) => result.name === answers.file));
+    });
+});
+
+/**
+ * Prompts the user for the repository he is interested in.
+ */
+var repositories = (formatter, repos) => new Promise((resolve) => {
+    inquirer.prompt([{
+        message: 'Which repository are you interested in ?',
+        name: 'repo',
+        type: 'list',
+        choices: _.pluck(repos, 'name')
+    }], (answers) => {
+        resolve(_.find(repos, (repo) => repo.name === answers.repo));
+    });
+});
+
+/**
  * Prompts the user for a username.
  * @param list the list of users to display
  */
@@ -61,5 +89,5 @@ var users = (formatter, list) => new Promise((resolve) => {
 });
 
 module.exports = {
-    prompt: { type, token, users }
+    prompt: { type, token, users, code, repositories }
 };
