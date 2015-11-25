@@ -9,7 +9,7 @@ const handler  = {};
 /**
  * Displays information about a repository.
  */
-const displayRepository = (repository, out) => out.render('repositories/information', repository);
+const displayRepository = (repository, out) => (out.render('repositories/information', repository), repository);
 
 /**
  * Displays the content of a file.
@@ -31,10 +31,8 @@ handler.users = (r, input, out) => {
 handler.repositories = (r, input, out) => {
     return out.prompt('search/repositories', r.body.items)
       .then((r) => repos.get(r.owner.login, r.name, input))
-      .then((r) => {
-          displayRepository(r.body, out);
-          return repos.contents(r.body.owner.login, r.body.name, input);
-      })
+      .then((r) => displayRepository(r.body, out))
+      .then((r) => repos.contents(r.body.owner.login, r.body.name, input))
       .then((response) => out.prompt('repositories/contents', input, response.body))
       .then((content) => repos.file(content, input))
       .then((response) => displayFile(response, out));
