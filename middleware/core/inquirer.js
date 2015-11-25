@@ -73,5 +73,5 @@ module.exports = (input, output, next) => {
     promptAction(input, output).then((action) => {
         input.set('answers:action', action);
         next();
-    }).catch(next);
+    });
 };
