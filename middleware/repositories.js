@@ -18,15 +18,11 @@ const displayFile = (response, out) => out.render('repositories/file', response.
  * @param out the middleware output
  */
 const displayRepositories = (input, out) => {
-    let user = undefined;
-
     return out.prompt('users/name', input)
-        .then((name) => (user = name))
-        .then(() => repos.list(user, input))
+        .then((login) => repos.list(login, input))
         .then((response) => out.prompt('repositories/list', input, response.body))
-        .then((response) => repos.get(user, response, input))
-        .then((response) => displayRepository(response.body, out))
-        .then((response) => repos.contents(user, response.body.name, input))
+        .then((repo) => displayRepository(repo, out))
+        .then((repo) => repos.contents(repo.owner.login, repo.name, input))
         .then((response) => out.prompt('repositories/contents', input, response.body))
         .then((content) => repos.file(content, input))
         .then((response) => displayFile(response, out));

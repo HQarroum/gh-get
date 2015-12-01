@@ -35,11 +35,12 @@ var list = (formatter, input, repos) => new Promise((resolve) => {
     inquirer.prompt([{
         message: 'Which repository are you interested in ?',
         type: 'list',
-        name: 'repo',
+        name: 'name',
         choices: _.pluck(repos, 'name')
     }], (answers) => {
-        input.set('answers:path', answers.repo);
-        resolve(answers.repo);
+        const repo = _.find(repos, { name: answers.name });
+        input.set('answers:path', repo.name);
+        resolve(repo);
     });
 });
 
