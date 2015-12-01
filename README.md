@@ -3,6 +3,7 @@
 </p>
 
 # gh-get
+[![Code Climate](https://codeclimate.com/github/HQarroum/gh-get/badges/gpa.svg)](https://codeclimate.com/github/HQarroum/gh-get)
 > Github swissknife command-line tool.
 
 Current version: **1.0.0**
