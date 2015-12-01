@@ -17,6 +17,7 @@ const display = (gist, out) => (out.render('gists/information', gist), gist);
 const displayGist = (input, output) => {
     return output.prompt('users/name', input)
         .then((name) => gist.list(name, input))
+        .then((res) => (res.body.length ? res : Promise.reject(new Error('The given user does not have any Gist'))))
         .then((response) => output.prompt('gists/list', input, response.body))
         .then((object) => gist.get(object.id, input))
         .then((response) => display(response.body, output))

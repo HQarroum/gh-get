@@ -49,7 +49,6 @@ var promptAction = (input) => new Promise((resolve) => {
             'List the people followed by a user but not following him',
             'List the repositories of a user',
             'List the Gists of a user',
-            'Retrieve the Gist of a user',
             'Search for repositories, users or code',
             'Quit'
         ]

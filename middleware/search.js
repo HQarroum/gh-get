@@ -38,7 +38,7 @@ handler.repositories = (res, input, out) => {
     return out.prompt('search/repositories', res.body.items)
       .then((r) => repos.get(r.owner.login, r.name, input))
       .then((r) => displayRepository(r.body, out))
-      .then((r) => repos.contents(r.body.owner.login, r.body.name, input))
+      .then((r) => repos.contents(r.owner.login, r.name, input))
       .then((r) => out.prompt('repositories/contents', input, r.body))
       .then((content) => repos.file(content, input))
       .then((response) => displayFile(response, out));
@@ -52,7 +52,7 @@ handler.repositories = (res, input, out) => {
  */
 handler.code = (res, input, out) => {
     return out.prompt('search/code', res.body.items)
-        .then((result) => search.resolveFile(result, input))
+        .then((file) => search.resolveFile(file, input))
         .then((result) => repos.file(result, input))
         .then((response) => displayFile(response, out));
 };
