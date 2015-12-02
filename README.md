@@ -10,6 +10,10 @@ Current version: **1.0.0**
 
 Lead Maintainer: [Halim Qarroum](mailto:hqm.post@gmail.com)
 
+## Status
+
+Currently under development.
+
 ## Install
 
 ##### Using NPM
