@@ -1,6 +1,5 @@
 'use strict';
 
-var _        = require('lodash');
 var inquirer = require('inquirer');
 var chalk    = require('chalk');
 var path     = require('path');
@@ -37,7 +36,7 @@ var octocat = (output) => {
  * Prompts the user to choose an action.
  * @returns {Promise} a promise to the user action.
  */
-var promptAction = (input) => new Promise((resolve) => {
+var promptAction = () => new Promise((resolve) => {
     inquirer.prompt([{
         message: 'What would you like to do ?',
         type: 'list',
@@ -67,7 +66,7 @@ module.exports = (input, output, next) => {
 
     if (!action) {
         octocat(output);
-        return promptAction(input).then((action) => {
+        return promptAction().then((action) => {
             input.set('answers:action', action);
             next();
         });
