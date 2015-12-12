@@ -1,6 +1,5 @@
 'use strict';
 
-const _        = require('lodash');
 const repos    = require('../dao/repositories');
 const search   = require('../dao/search');
 const profile  = require('../dao/profile');
