@@ -2,17 +2,17 @@
 
 'use strict';
 
-let nconf  = require('nconf');
-let fs     = require('fs');
-let path   = require('path');
-let Chain  = require('middleware-chain');
-let output = require('./views/formatter');
-let dir    = path.join(__dirname, 'middleware');
+const nconf  = require('nconf');
+const fs     = require('fs');
+const path   = require('path');
+const Chain  = require('middleware-chain');
+const output = require('./views/formatter');
+const dir    = path.join(__dirname, 'middleware');
 
 /**
  * Instantiating a new chain.
  */
-let chain = new Chain();
+const chain = new Chain();
 
 /**
  * Initializing `nconf` to load its configuration
@@ -32,7 +32,7 @@ chain.use(require('./middleware/core/inquirer'));
  * in the `middleware` directory.
  */
 fs.readdirSync(dir).forEach((file) => {
-    let name = path.join(dir, file);
+    const name = path.join(dir, file);
     if (fs.lstatSync(name).isFile()) {
         chain.use(require(name));
     }
