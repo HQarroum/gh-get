@@ -3,6 +3,8 @@
 </p>
 
 # gh-get
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/HQarroum/gh-get.svg)](https://greenkeeper.io/)
 [![Code Climate](https://codeclimate.com/github/HQarroum/gh-get/badges/gpa.svg)](https://codeclimate.com/github/HQarroum/gh-get)
 > Github swissknife command-line tool.
 
